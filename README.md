@@ -25,6 +25,7 @@ Tudo é gerado por código, sem arquivos de áudio. Os botões ficam na barra de
 - **Versão completa / curta**: o botão na barra de baixo alterna. A curta (`?v=curta` no endereço) tem 23 cenas e cerca de 6:45, em vez de 29 cenas e 10:13. Ela tira Clima, o segundo Relevo (Andes), Regiões polares, Dubai, Sydney e Modo científico, e ajusta a duração de cada cena ao tamanho da narração.
 - **✨ Efeitos de cinema**: vinheta e granulação de filme. Desligue se o computador estiver lento.
 - **Cartões**: "VECORION APRESENTA" na abertura e as três frases finais, com os créditos das imagens, no encerramento.
+- **Cartões de dados**: números aproximados e conhecidos aparecem no canto direito em cada cena (área dos continentes, altura do Everest, população das cidades etc.).
 - Os títulos das cenas entram com animação de desfoque e espaçamento.
 
 ## Texturas (opcional, para mais qualidade)
