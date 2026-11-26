@@ -56,7 +56,21 @@ input[type=range]{width:100%}
 @media(max-width:600px){#ts{display:none}#tt{font-size:10px}}
 #sub{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(max(7vh,46px) + 8px);width:min(88vw,760px);text-align:center;z-index:11;font-size:clamp(12px,2.6vw,17px);line-height:1.4;color:#fff;text-shadow:0 0 6px #000,0 0 12px #000;background:rgba(0,0,0,.4);padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .6s;pointer-events:none}
 #sub.on{opacity:1}
-#vo,#mx{opacity:.45}#mv{width:70px}#tp{height:32px}
+#vo,#mx{opacity:.45}#sv,#fx{height:32px;white-space:nowrap}
+#vig{position:fixed;inset:0;z-index:8;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.6) 100%)}
+#grain{position:fixed;inset:-60px;z-index:8;pointer-events:none;opacity:.075;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:gr .8s steps(1) infinite}
+@keyframes gr{0%{transform:translate(0,0)}17%{transform:translate(-22px,14px)}34%{transform:translate(18px,-26px)}51%{transform:translate(-30px,-10px)}68%{transform:translate(24px,22px)}85%{transform:translate(-8px,28px)}}
+body:not(.fx) #vig,body:not(.fx) #grain{display:none}
+#cap::before{content:"";display:block;width:0;height:1px;background:var(--c);margin-bottom:14px;box-shadow:0 0 10px var(--c);transition:width 1.8s ease .3s}#cap.on::before{width:clamp(60px,12vw,170px)}
+#cap.on #ct{animation:ctin 2.4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes ctin{from{letter-spacing:.75em;filter:blur(10px);opacity:0}to{letter-spacing:.28em;filter:blur(0);opacity:1}}
+#cap.on #cs{animation:csin 1.8s .7s ease-out both}
+@keyframes csin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#card{position:fixed;left:0;right:0;top:calc(7vh + 28px);text-align:center;z-index:11;pointer-events:none}
+#card div{opacity:0;transition:opacity 1.8s;letter-spacing:.34em;font-weight:200;color:#fff;font-size:clamp(15px,3.2vw,32px);margin:12px 0;text-shadow:0 0 14px #000,0 0 28px #0a4a7a}
+#card div.on{opacity:1}
+#cr{position:fixed;left:0;right:0;bottom:calc(max(7vh,46px) + 18px);text-align:center;z-index:11;pointer-events:none;opacity:0;transition:opacity 1.8s;font-size:clamp(10px,1.6vw,13px);letter-spacing:.2em;color:#9fdcff}
+#cr.on{opacity:.9}body.tp #cr{display:none}#mv{width:70px}#tp{height:32px}
 #tpv{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(max(7vh,46px) + 12px);width:min(92vw,980px);z-index:13;background:rgba(0,0,0,.74);border:1px solid #5fd4ff55;border-radius:12px;padding:14px 22px;display:none;text-align:center;pointer-events:none}
 #tpv.on{display:block}body.tp #sub{display:none}body.rec #tpv{display:none!important}
 #tpm{font-size:12px;color:#9fdcff;letter-spacing:.12em;margin-bottom:8px}#tpt{font-size:clamp(18px,3.2vw,36px);line-height:1.45;font-weight:300}#tpt span{opacity:.32;transition:opacity .25s,color .25s}#tpt span.d{opacity:1;color:#fff}#tpt span.c{opacity:1;color:#ffd35e}
@@ -67,11 +81,11 @@ body.rec,body.rec *{cursor:none!important}body.rec #tl>*{visibility:hidden}body.
 #rot.on{display:flex}.rh{display:flex;justify-content:space-between;align-items:center;color:var(--c)}
 #ra{flex:1;background:#06101e;color:#dff6ff;border:1px solid #5fd4ff33;border-radius:6px;padding:8px;font:13px/1.55 system-ui;resize:none}
 @media(max-width:600px){#pv{display:none}#tl{gap:4px;padding:0 6px}}
-</style></head><body>
+</style></head><body class="fx">
 <div id="load"><h1>EARTH INFINITY</h1><div id="bar"><i></i></div><div id="lt">Inicializando…</div></div>
 <div id="err"></div>
 <div id="top"><b>EARTH INFINITY</b><span id="utc">UTC --:--:--</span><span id="dt">--</span><span id="cur">LAT -- LON --</span><span id="fps">-- FPS</span><span id="lvl">Nível 1</span></div>
-<div id="labels"></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="mx" aria-label="Trilha sonora" title="Trilha sonora e efeitos">🎵</button><input type="range" id="mv" min="0" max="1" step=".05" value=".7" aria-label="Volume da trilha"><button id="tp" aria-label="Teleprompter" title="Teleprompter para gravar a sua voz">📜</button><button id="vo" aria-label="Narração por voz" title="Narração por voz">🔊</button><select id="vs" aria-label="Voz"></select><button id="rec" aria-label="Gravar vídeo" title="Grava o filme completo com voz e baixa o vídeo">⏺ Gravar</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="tpv"><div id="tpm"></div><div id="tpt"></div><div id="tpb"><i></i></div></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
+<div id="labels"></div><div id="vig"></div><div id="grain"></div><div id="card"><div></div><div></div><div></div></div><div id="cr"></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="sv" aria-label="Versão" title="Alterna entre a versão completa e a curta"></button><button id="fx" aria-label="Efeitos de cinema" title="Vinheta e granulação de filme">✨</button><button id="mx" aria-label="Trilha sonora" title="Trilha sonora e efeitos">🎵</button><input type="range" id="mv" min="0" max="1" step=".05" value=".7" aria-label="Volume da trilha"><button id="tp" aria-label="Teleprompter" title="Teleprompter para gravar a sua voz">📜</button><button id="vo" aria-label="Narração por voz" title="Narração por voz">🔊</button><select id="vs" aria-label="Voz"></select><button id="rec" aria-label="Gravar vídeo" title="Grava o filme completo com voz e baixa o vídeo">⏺ Gravar</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="tpv"><div id="tpm"></div><div id="tpt"></div><div id="tpb"><i></i></div></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
 <div class="panel" id="side">
 <h4>MODOS</h4><div class="modes" id="modes"></div>
 <h4>CAMADAS</h4><div id="layers"></div>
@@ -344,7 +358,8 @@ function setInf(op){INF.visible=op>.01;word.visible=INF.visible;t1.material.opac
 function infUpdate(now){const a=cg2.attributes.position;let n=0;for(let k=0;k<NCM;k++){const h=(now*.00005+k/NCM)%1;for(let j=0;j<TRL;j++){const p=curve.getPointAt(((h-j*.0035)%1+1)%1);a.setXYZ(n++,p.x,p.y,p.z)}}a.needsUpdate=true}
 const D0=()=>clamp(10.8/(camera.aspect*.828),10,34);
 /* roteiro: [dur,título,legenda,modo,sol,vel,lat0,lon0,dist0,lat1,lon1,dist1,rel,{sym,nfi,nfo,nocap}]  (dist -1 = enquadrar o símbolo) */
-const SC=[
+const SHORT=/[?&]v=curta/.test(location.search);
+const SCF=[
 [22, "", "", 0, 1, 60, 12, -78, -1, 12, -62, -1, 0, {"sym": 1, "nfo": 1, "nocap": 1}, "Vecorion apresenta. Um símbolo sem começo e sem fim, e dentro dele, o único mundo que conhecemos."],
 [22, "EARTH INFINITY", "Um planeta vivo", 0, 1, 60, 12, -62, -1, 15, -25, 4.2, 0, {"sym": 1, "nfi": 1}, "Bem-vindo ao Earth Infinity. Uma viagem completa pelo planeta Terra, desenhada inteiramente por código. Vamos sair da órbita e descer, camada por camada, até o coração das cidades."],
 [26, "Dia e noite", "A sombra percorre o planeta a cada 24 horas", 0, 0, 2500, 10, -30, 4.2, 25, 40, 3.4, 0, {}, "A Terra gira uma vez a cada vinte e quatro horas. Enquanto uma metade do mundo desperta sob o sol, a outra adormece na sombra. E a linha entre as duas nunca para de caminhar pela superfície do planeta."],
@@ -374,6 +389,10 @@ const SC=[
 [18, "Sydney", "Austrália", 3, 1, 1, -20, 130, 3, -33.87, 151.21, 1.2, 0, {"hc": ["Australia"]}, "Sydney, na Austrália, entre o oceano e uma das baías mais famosas do hemisfério sul."],
 [24, "Modo científico", "Camadas e grade geográfica", 8, 1, 1, 20, -30, 4, 0, 40, 2.6, 0, {}, "No modo científico, a grade de latitude e longitude mostra como localizamos qualquer ponto da Terra. Cada linha é uma coordenada, e cada coordenada, um lugar."],
 [38, "", "", 0, 0, 600, 20, 40, 2.5, 15, -10, -1, 0, {"sym": 1, "nocap": 1}, "Um único planeta. Bilhões de histórias. E possibilidades infinitas. Vecorion."]];
+/* versão curta: tira cenas repetidas/simuladas e ajusta cada duração ao tamanho da narração */
+const SC_DROP=[6,16,19,26,27,28];
+const SC=SHORT?SCF.map((r,n)=>[r,n+1]).filter(x=>!SC_DROP.includes(x[1])).map(([r,n])=>{const c=r.slice();if(n!==1&&n!==2&&n!==29)c[0]=Math.min(c[0],Math.max(10,Math.ceil((c[14]||'').length/13)+5));return c}):SCF;
+
 let si=0,st=0,CS=null;const fadeEl=$('#fade'),capEl=$('#cap');
 function startScene(i){vsStop();si=i%SC.length;st=0;CS=SC[si];setMode(CS[3]);sunLock=CS[4];speed=CS[5];$('#ct').textContent=CS[1];$('#cs').textContent=CS[2];if(!hlC&&earth)initHL();hlDraw(CS[13]||{});$('#sub').textContent=CS[14]||'';mxScene(si)}
 function director(dt){st+=dt;vsTick();const o=CS[13]||{},dur=CS[0],u=clamp(st/dur,0,1),e=.3*u+.7*u*u*(3-2*u),m=(a,b)=>a+(b-a)*e,Dn=D0(),d0=CS[8]<0?Dn:CS[8],d1=CS[11]<0?Dn:CS[11];
@@ -381,7 +400,7 @@ function director(dt){st+=dt;vsTick();const o=CS[13]||{},dur=CS[0],u=clamp(st/du
  tgt.lat=camState.lat=lat;tgt.lon=camState.lon=lon;tgt.dist=camState.dist=d;
  SW=o.sym?clamp((d-3)/(Dn-3),0,1):0;setInf(o.sym?clamp((d-5.5)/3,0,1):0);
  const fi=o.nfi?0:1.2,fo=o.nfo?0:1;fadeEl.style.opacity=PAUSED?0:Math.max(st<fi?1-st/fi:0,st>dur-fo?(st-(dur-fo))/fo:0);
- capEl.classList.toggle('on',st>1.5&&st<dur-2&&!o.nocap);$('#sub').classList.toggle('on',CC&&st>1&&st<dur-.8&&!!CS[14]);if(uni)uni.uZ.value=clamp((2.2-d)/1,0,1);if(st>=dur){if(REC&&si===SC.length-1){st=dur;recFinish()}else startScene(si+1)}tlUpdate()}
+ capEl.classList.toggle('on',st>1.5&&st<dur-2&&!o.nocap);$('#sub').classList.toggle('on',CC&&st>1&&st<dur-.8&&!!CS[14]);if(uni)uni.uZ.value=clamp((2.2-d)/1,0,1);if(st>=dur){if(REC&&si===SC.length-1){st=dur;recFinish()}else startScene(si+1)}cardsUpd();tlUpdate()}
 let PAUSED=false,dragTL=false,lastSec=-1;
 const TT=SC.reduce((a,c)=>a+c[0],0),STS=[];{let a=0;SC.forEach(c=>{STS.push(a);a+=c[0]})}
 const fmt=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
@@ -500,6 +519,17 @@ setInterval(()=>{if(!$('#tpv').classList.contains('on')||!CS)return;const dur=CS
  if(n!==tpN){tpN=n;tpW.forEach((w,k)=>{w.className=k<n?'d':k===n?'c':''})}
  $('#tpm').textContent='CENA '+(si+1)+'/'+SC.length+' · '+(CS[1]||(si?'Final':'Abertura'))+' · restam '+Math.ceil(Math.max(0,dur-st))+' s';
  $('#tpb i').style.width=(clamp(st/dur,0,1)*100)+'%'},120);
+/* ===== VERSÃO, EFEITOS E CARTÕES DE ABERTURA/FECHAMENTO ===== */
+$('#sv').textContent=SHORT?'Versão curta':'Versão completa';
+$('#sv').onclick=()=>{location.search=SHORT?'':'?v=curta'};
+$('#fx').onclick=()=>{const on=document.body.classList.toggle('fx');$('#fx').style.opacity=on?1:.45};
+const cdE=[...$('#card').children],crE=$('#cr'),cdT=['','',''];
+const OPEN=['VECORION APRESENTA'],END=['Um único planeta.','Bilhões de histórias.','Possibilidades infinitas.'];
+function cardsUpd(){if(!CS)return;const d=CS[0],last=si===SC.length-1,first=si===0;let t=['','',''],on=[0,0,0],cr=0;
+ if(first){t[0]=OPEN[0];on[0]=st>2.5&&st<d-4}
+ else if(last){t=END.slice();const T=[2,11.5,21.8],off=st>d-2.5;on=T.map(x=>st>x&&!off?1:0);cr=st>d-9&&st<d-1.5}
+ cdE.forEach((e,k)=>{if(cdT[k]!==t[k]){cdT[k]=t[k];e.textContent=t[k]}e.classList.toggle('on',!!on[k])});
+ crE.textContent=cr||last?'Imagens: NASA Earth Observatory · Natural Earth · three-globe':'';crE.classList.toggle('on',!!cr)}
 build().then(()=>{setMode(0);srcPanel();autoRot=false;startScene(0);prog(100,'Pronto');const l=$('#load');l.style.opacity=0;setTimeout(()=>l.remove(),900);requestAnimationFrame(loop)}).catch(e=>fail(e.message||e));
 }
 </script></body></html>
