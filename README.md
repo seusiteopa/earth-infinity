@@ -28,6 +28,12 @@ Tudo é gerado por código, sem arquivos de áudio. Os botões ficam na barra de
 - **Cartões de dados**: números aproximados e conhecidos aparecem no canto direito em cada cena (área dos continentes, altura do Everest, população das cidades etc.).
 - Os títulos das cenas entram com animação de desfoque e espaçamento.
 
+## Novidades da versão dinâmica
+- **Câmera travada**: o público não consegue dar zoom nem arrastar (nem o zoom do navegador). Para explorar livremente, abra com `?livre=1` no endereço.
+- **Câmera viva**: balanço leve, "respiração" de distância, inclinação sutil, órbita extra em cada cena e curvas de movimento diferentes. Nas cenas com batida, a câmera dá um pequeno pulso a cada kick.
+- **Trilha eletrônica** (124 BPM): cada cena tem uma energia. Há cenas calmas, outras com groove (deep house) e picos com baixo em semicolcheias. Antes de cada pico entra um build-up com riser e rufo de caixa, e o drop cai no início da cena seguinte. O pad "pulsa" junto com o kick (sidechain).
+- **Narração nova**: texto conversado, com perguntas e respostas ("Você sabia?"). A pergunta também aparece na tela no momento em que é feita. A duração de cada cena se ajusta ao tamanho da fala.
+
 ## Texturas (opcional, para mais qualidade)
 - NASA Blue Marble (dia): https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-map/
 - NASA Blue Marble com relevo e batimetria: https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography-bathymetry

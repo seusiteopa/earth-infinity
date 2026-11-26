@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>EARTH INFINITY</title>
 <style>
 :root{--c:#5fd4ff;--bg:rgba(5,12,26,.74);--ln:#5fd4ff44}
@@ -71,6 +71,10 @@ body:not(.fx) #vig,body:not(.fx) #grain{display:none}
 #card div.on{opacity:1}
 #cr{position:fixed;left:0;right:0;bottom:calc(max(7vh,46px) + 18px);text-align:center;z-index:11;pointer-events:none;opacity:0;transition:opacity 1.8s;font-size:clamp(10px,1.6vw,13px);letter-spacing:.2em;color:#9fdcff}
 #cr.on{opacity:.9}
+#qa{position:fixed;left:6vw;bottom:calc(max(7vh,46px) + 112px);z-index:11;pointer-events:none;max-width:min(40vw,420px);opacity:0;transform:translateY(12px);transition:opacity .9s,transform .9s;background:rgba(5,12,26,.62);border-left:3px solid var(--c);padding:10px 16px;border-radius:0 10px 10px 0;backdrop-filter:blur(6px)}
+#qa.on{opacity:1;transform:none}body.tp #qa{display:none}
+#qa small{display:block;font-size:10px;letter-spacing:.3em;color:var(--c);margin-bottom:4px}#qa div{font-size:clamp(14px,2.3vw,22px);font-weight:300;line-height:1.3;color:#fff}
+@media(max-width:700px){#qa{max-width:62vw;bottom:calc(max(7vh,46px) + 96px)}}
 #fact{position:fixed;right:6vw;top:calc(7vh + 14px);text-align:right;z-index:11;pointer-events:none;opacity:0;transition:opacity 1.4s}
 #fact.on{opacity:1}body.tp #fact{display:none}
 #fact b{display:block;font-weight:200;font-size:clamp(22px,4vw,44px);letter-spacing:.05em;color:#fff;text-shadow:0 0 12px #000,0 0 26px #0a4a7a}
@@ -89,7 +93,7 @@ body.rec,body.rec *{cursor:none!important}body.rec #tl>*{visibility:hidden}body.
 <div id="load"><h1>EARTH INFINITY</h1><div id="bar"><i></i></div><div id="lt">Inicializando…</div></div>
 <div id="err"></div>
 <div id="top"><b>EARTH INFINITY</b><span id="utc">UTC --:--:--</span><span id="dt">--</span><span id="cur">LAT -- LON --</span><span id="fps">-- FPS</span><span id="lvl">Nível 1</span></div>
-<div id="labels"></div><div id="vig"></div><div id="grain"></div><div id="card"><div></div><div></div><div></div></div><div id="cr"></div><div id="fact"></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="sv" aria-label="Versão" title="Alterna entre a versão completa e a curta"></button><button id="fx" aria-label="Efeitos de cinema" title="Vinheta e granulação de filme">✨</button><button id="mx" aria-label="Trilha sonora" title="Trilha sonora e efeitos">🎵</button><input type="range" id="mv" min="0" max="1" step=".05" value=".7" aria-label="Volume da trilha"><button id="tp" aria-label="Teleprompter" title="Teleprompter para gravar a sua voz">📜</button><button id="vo" aria-label="Narração por voz" title="Narração por voz">🔊</button><select id="vs" aria-label="Voz"></select><button id="rec" aria-label="Gravar vídeo" title="Grava o filme completo com voz e baixa o vídeo">⏺ Gravar</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="tpv"><div id="tpm"></div><div id="tpt"></div><div id="tpb"><i></i></div></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
+<div id="labels"></div><div id="vig"></div><div id="grain"></div><div id="card"><div></div><div></div><div></div></div><div id="cr"></div><div id="fact"></div><div id="qa"><small>VOCÊ SABIA?</small><div></div></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="sv" aria-label="Versão" title="Alterna entre a versão completa e a curta"></button><button id="fx" aria-label="Efeitos de cinema" title="Vinheta e granulação de filme">✨</button><button id="mx" aria-label="Trilha sonora" title="Trilha sonora e efeitos">🎵</button><input type="range" id="mv" min="0" max="1" step=".05" value=".7" aria-label="Volume da trilha"><button id="tp" aria-label="Teleprompter" title="Teleprompter para gravar a sua voz">📜</button><button id="vo" aria-label="Narração por voz" title="Narração por voz">🔊</button><select id="vs" aria-label="Voz"></select><button id="rec" aria-label="Gravar vídeo" title="Grava o filme completo com voz e baixa o vídeo">⏺ Gravar</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="tpv"><div id="tpm"></div><div id="tpt"></div><div id="tpb"><i></i></div></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
 <div class="panel" id="side">
 <h4>MODOS</h4><div class="modes" id="modes"></div>
 <h4>CAMADAS</h4><div id="layers"></div>
@@ -284,15 +288,21 @@ let speed=1;$('#sp').oninput=e=>{speed=Math.round(Math.pow(10,+e.target.value)*1
 /* ---------- câmera ---------- */
 const camState={lat:20,lon:20,dist:4.2},tgt={lat:20,lon:20,dist:4.2};
 function flyTo(la,lo,d){tgt.lat=clamp(la,-85,85);tgt.lon=camState.lon+wr(lo-camState.lon);tgt.dist=d}
+/* bloqueia o zoom do navegador (Ctrl+roda, pinça, Ctrl +/-) */
+addEventListener('wheel',e=>{if(e.ctrlKey)e.preventDefault()},{passive:false});
+['gesturestart','gesturechange','gestureend'].forEach(g=>addEventListener(g,e=>e.preventDefault()));
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['+','-','=','_','0'].includes(e.key))e.preventDefault()});
+addEventListener('dblclick',e=>e.preventDefault());
+const LOCK=!/[?&]livre=1/.test(location.search);/* câmera travada: só o filme conduz. Use ?livre=1 para explorar */
 const cv=R.domElement,ptr=new Map();let moved=0,pinch=0;
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,e);moved=0;if(ptr.size===2){const [a,b]=[...ptr.values()];pinch=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}});
-cv.addEventListener('pointermove',e=>{const p=ptr.get(e.pointerId);mouse.x=e.clientX;mouse.y=e.clientY;mouse.dirty=true;if(!p)return;
+cv.addEventListener('pointerdown',e=>{if(LOCK)return;cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,e);moved=0;if(ptr.size===2){const [a,b]=[...ptr.values()];pinch=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}});
+cv.addEventListener('pointermove',e=>{if(LOCK)return;const p=ptr.get(e.pointerId);mouse.x=e.clientX;mouse.y=e.clientY;mouse.dirty=true;if(!p)return;
  if(ptr.size===2){ptr.set(e.pointerId,e);const [a,b]=[...ptr.values()],d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);tgt.dist=clamp(tgt.dist*pinch/d,1.04,14);pinch=d;moved=99;return}
  const dx=e.clientX-p.clientX,dy=e.clientY-p.clientY;moved+=Math.abs(dx)+Math.abs(dy);const k=.09*(camState.dist-.9)+.01;
  tgt.lon-=dx*k;tgt.lat=clamp(tgt.lat+dy*k,-85,85);camState.lon=tgt.lon;camState.lat=tgt.lat;ptr.set(e.pointerId,e)});
-cv.addEventListener('pointerup',e=>{ptr.delete(e.pointerId);if(moved<5&&ptr.size===0)pick(e.clientX,e.clientY)});
+cv.addEventListener('pointerup',e=>{if(LOCK)return;ptr.delete(e.pointerId);if(moved<5&&ptr.size===0)pick(e.clientX,e.clientY)});
 cv.addEventListener('pointercancel',e=>ptr.delete(e.pointerId));
-cv.addEventListener('wheel',e=>{e.preventDefault();tgt.dist=clamp(tgt.dist*Math.exp(e.deltaY*.0012),1.04,14)},{passive:false});
+cv.addEventListener('wheel',e=>{e.preventDefault();if(LOCK)return;tgt.dist=clamp(tgt.dist*Math.exp(e.deltaY*.0012),1.04,14)},{passive:false});
 const ray=new THREE.Raycaster(),mouse={x:0,y:0,dirty:false};let hover=null,sel=null;
 function hit(x,y){ray.setFromCamera(new THREE.Vector2(x/innerWidth*2-1,-(y/innerHeight)*2+1),camera);const h=ray.intersectObject(earth)[0];return h?toLL(h.point):null}
 const angd=(a,b,c,d)=>Math.acos(clamp(ll(a,b).dot(ll(c,d)),-1,1))/D;
@@ -321,7 +331,7 @@ function loop(now){requestAnimationFrame(loop);const dt=Math.min(.1,(now-last)/1
  if(CS)director(PAUSED?0:dt);if(!PAUSED)simT+=dt*1000*speed;const k=1-Math.exp(-dt*4);
  if(autoRot&&!ptr.size)tgt.lon-=dt*(mode===7?4:3);
  camState.lat+=(tgt.lat-camState.lat)*k;camState.lon+=(tgt.lon-camState.lon)*k;camState.dist+=(tgt.dist-camState.dist)*k;
- camera.position.copy(ll(camState.lat,camState.lon,camState.dist));camera.up.set(0,1,0);camera.lookAt(0,0,0);if(SW>.001||INF.visible){const Rv=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion),off=Rv.clone().multiplyScalar(-LC*SW);camera.position.add(off);camera.lookAt(off);{const Rx=Rv.clone(),Up=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion),Qs=new THREE.Quaternion().setFromAxisAngle(Up,now*.0004).multiply(new THREE.Quaternion().setFromAxisAngle(Rx,now*.00027));INF.position.copy(Rv.multiplyScalar(-LC)).applyQuaternion(Qs);INF.quaternion.copy(Qs).multiply(camera.quaternion);word.position.copy(Rx).multiplyScalar(-LC).addScaledVector(Up,-2.95);word.quaternion.copy(camera.quaternion);if(INF.visible)infUpdate(now)}}
+ const LF=lifeFX(now);camera.position.copy(ll(camState.lat+LF.la,camState.lon+LF.lo,camState.dist*LF.dm));camera.up.set(0,1,0);camera.lookAt(0,0,0);if(!(SW>.001||INF.visible))camera.rotateZ(LF.roll);if(SW>.001||INF.visible){const Rv=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion),off=Rv.clone().multiplyScalar(-LC*SW);camera.position.add(off);camera.lookAt(off);{const Rx=Rv.clone(),Up=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion),Qs=new THREE.Quaternion().setFromAxisAngle(Up,now*.0004).multiply(new THREE.Quaternion().setFromAxisAngle(Rx,now*.00027));INF.position.copy(Rv.multiplyScalar(-LC)).applyQuaternion(Qs);INF.quaternion.copy(Qs).multiply(camera.quaternion);word.position.copy(Rx).multiplyScalar(-LC).addScaledVector(Up,-2.95);word.quaternion.copy(camera.quaternion);if(INF.visible)infUpdate(now)}}
  sunUpdate();cloudM.rotation.y+=dt*.004*Math.max(1,speed*.2);cloudM2.rotation.y-=dt*.003;
  const ma=simT/864e5/27.32*6.2832;G.moon.position.set(8*Math.cos(ma),8*Math.sin(ma)*.09,8*Math.sin(ma));G.moon.rotation.y=-ma;
  G.moon.visible=G.orbit.visible=(mode===7||camState.dist>4)&&!INF.visible;
@@ -398,15 +408,18 @@ const SCF=[
 const FACTS={3:[['24 h','uma rotação completa'],['≈ 1.670 km/h','velocidade no Equador']],4:[['384.400 km','distância média até a Lua'],['27,3 dias','uma volta ao redor da Terra']],5:[['≈ 100 km','espessura da atmosfera'],['78% · 21%','nitrogênio · oxigênio']],7:[['≈ 71%','da superfície é oceano'],['≈ 11 km','profundidade máxima']],
 8:[['17,8 mi km²','área']],9:[['30,4 mi km²','área']],10:[['10,2 mi km²','área']],11:[['44,6 mi km²','área']],12:[['≈ 8,5 mi km²','área']],13:[['14,2 mi km²','área']],14:[['24,7 mi km²','área']],
 15:[['8.849 m','Monte Everest']],16:[['≈ 7.000 km','extensão dos Andes']],17:[['> 5 mi km²','de floresta tropical']],18:[['≈ 9 mi km²','área do Saara'],['≈ 6.650 km','extensão do Nilo']],19:[['≈ 2,2 mi km²','área da Groenlândia']],
-20:[['≈ 2,1 mi','habitantes em Paris']],21:[['≈ 8,3 mi','habitantes em Nova York']],22:[['≈ 11,5 mi','habitantes em São Paulo']],23:[['≈ 37 mi','na região metropolitana de Tóquio']],25:[['≈ 100 mil','voos por dia no mundo']],26:[['828 m','Burj Khalifa']],27:[['≈ 5,3 mi','habitantes na Grande Sydney']]};
-SCF.forEach((r,n)=>{r[15]=FACTS[n+1]||null});
+20:[['≈ 2,1 mi','habitantes em Paris']],21:[['≈ 8,3 mi','habitantes em Nova York']],22:[['≈ 11,5 mi','habitantes em São Paulo']],23:[['> 30 mi','na região metropolitana de Tóquio']],25:[['≈ 100 mil','voos por dia no mundo']],26:[['828 m','Burj Khalifa']],27:[['≈ 5,3 mi','habitantes na Grande Sydney']]};
+const NARR={"1": "Vecorion apresenta. Antes de começar, fica à vontade, porque essa viagem é sua. Um símbolo sem começo e sem fim e, dentro dele, o único mundo que conhecemos. Pronto para ver a Terra como poucas vezes você viu?", "2": "Bem-vindo ao Earth Infinity. Daqui de cima, tudo parece pequeno e calmo. Mas, nos próximos minutos, a gente vai descer, camada por camada, dos oceanos aos continentes, até o coração das cidades. E tudo o que você está vendo foi desenhado por código. Vamos nessa?", "3": "Você sabia que, neste exato momento, parte do mundo está acordando enquanto outra parte vai dormir? A Terra dá uma volta em torno do próprio eixo a cada vinte e quatro horas, e é isso que cria o dia e a noite. Perto do Equador, a superfície se move a mais de mil e seiscentos quilômetros por hora. Mas então por que a gente não sente? Porque tudo gira junto com ela: o ar, os oceanos e nós, em velocidade constante.", "4": "Agora olha quem está ali: a Lua. Ela dá uma volta completa ao redor da Terra a cada vinte e sete dias, a cerca de trezentos e oitenta e quatro mil quilômetros daqui. E sabe o que ela faz de verdade? Puxa a água dos oceanos e cria as marés. Aqui a Lua aparece fora de escala, só para você enxergar a órbita.", "5": "Esse é o amanhecer visto do espaço. Repara nessa linha azul fininha na borda do planeta: é a atmosfera. Ela parece enorme quando a gente olha para cima, mas, perto do tamanho da Terra, é uma película delicada. E é ela que nos protege e permite que exista vida.", "6": "E o clima? Nuvens e ciclones desenham o tempo do planeta inteiro. Só um aviso importante: os furacões e as temperaturas desta cena são uma simulação visual, não medições em tempo real. Mas a ideia é verdadeira: o calor do Equador e o frio dos polos movem o ar, e é esse movimento que cria os ventos e as tempestades.", "7": "Será que você sabe quanto da Terra é água? Cerca de setenta e um por cento da superfície! Por isso ela é chamada de planeta azul. As correntes levam calor de um canto a outro do mundo, e os navios cruzam essas rotas todos os dias. Atenção de novo: as correntes e as embarcações desta cena são simuladas.", "8": "Agora, os continentes. Começamos pela América do Sul, onde moram selvas, geleiras, desertos e a maior floresta tropical do mundo. Em destaque, o formato real do continente, traçado a partir de dados cartográficos.", "9": "A África é o segundo maior continente do mundo e é cortada pela linha do Equador. Os cientistas apontam que foi aqui que a nossa espécie surgiu, há cerca de trezentos mil anos. Ou seja: de certa forma, todo mundo tem raízes nesse lugar.", "10": "A Europa tem uma curiosidade: é um dos menores continentes em área, mas abriga dezenas de países, dezenas de línguas e uma diversidade cultural gigantesca. Dá para atravessar vários países em um único dia de viagem.", "11": "A Ásia é a campeã em quase tudo: o maior continente em área e o mais populoso. Mais da metade da humanidade vive aqui. E é também onde estão as montanhas mais altas do planeta, que a gente visita já, já.", "12": "A Oceania reúne a Austrália, a Nova Zelândia e milhares de ilhas espalhadas pelo oceano Pacífico. Muita gente pergunta se a Austrália é país ou continente. Ela é um país que ocupa praticamente sozinho a sua massa de terra.", "13": "E a Antártida: o continente mais frio, mais seco e mais ventoso da Terra. Quase todo coberto de gelo, que em alguns pontos passa de quatro quilômetros de espessura. Não tem população permanente, só pesquisadores que passam temporadas por lá.", "14": "Do outro lado, a América do Norte, que vai dos desertos do México às florestas e lagos do Canadá, passando pelos Estados Unidos. É aqui que ficam alguns dos maiores lagos de água doce do planeta.", "15": "Agora vamos falar de relevo. No mapa topográfico, as montanhas ganham vida. Esse é o Himalaia, onde fica o Monte Everest, o ponto mais alto da Terra acima do nível do mar, com oito mil oitocentos e quarenta e nove metros. E o mais curioso: o Himalaia ainda está crescendo, alguns milímetros por ano. Em destaque, o Nepal.", "16": "Do outro lado do globo, os Andes percorrem toda a borda oeste da América do Sul, em mais de sete mil quilômetros. É a cordilheira continental mais longa do planeta. Em destaque, o Chile.", "17": "A Floresta Amazônica é uma das maiores concentrações de vida do planeta e ajuda a regular o clima. Dizem que ela é o pulmão do mundo, mas o papel mais importante dela é outro: ela movimenta umidade e ajuda a levar chuva para regiões inteiras. Em destaque, o Brasil.", "18": "O Saara é o maior deserto quente do mundo, quase do tamanho dos Estados Unidos. Mas olha essa faixa verde cortando a areia: é o vale do rio Nilo, berço de uma das primeiras grandes civilizações. Em destaque, o Egito.", "19": "Nos extremos do planeta, o gelo reflete a luz do sol e ajuda a manter o equilíbrio do clima. Aqui, a Groenlândia, no Ártico, a maior ilha do mundo.", "20": "Chegamos aos países. Cada fronteira conta uma história, e muitas foram desenhadas ao longo de séculos. Aproximando, encontramos Paris, na França, uma das cidades mais visitadas do mundo.", "21": "Nova York, nos Estados Unidos. Arranha-céus, avenidas e milhões de pessoas em movimento, numa das maiores metrópoles do planeta. Dizem que ela nunca dorme e, olhando daqui de cima, dá para entender por quê.", "22": "São Paulo, no Brasil, a maior cidade da América do Sul. Ruas, pontes e avenidas formam um organismo vivo, que quase nunca para. Se você mora por aqui, talvez esteja olhando para a sua própria cidade.", "23": "Tóquio, no Japão, uma das regiões metropolitanas mais populosas do mundo, com mais de trinta milhões de pessoas. Um lugar onde tradição e tecnologia caminham lado a lado.", "24": "Quando a noite cai, as cidades se acendem. Essas luzes mostram onde as pessoas vivem e desenham, no escuro, o mapa da humanidade. Repara nos vazios: oceanos, desertos e florestas quase não têm luz, e isso conta uma história inteira sobre onde nós estamos.", "25": "Sobre essas luzes existe uma rede invisível: aviões, navios e veículos em movimento constante, ligando cada ponto do planeta a todos os outros. Aqui, todo esse tráfego é simulado, só para representar a atividade global.", "26": "Dubai, nos Emirados Árabes: uma cidade que surgiu no deserto e hoje abriga o Burj Khalifa, o prédio mais alto do mundo, com oitocentos e vinte e oito metros, além de um dos maiores pontos de conexão aérea do planeta.", "27": "Sydney, na Austrália, entre o oceano e uma das baías mais famosas do hemisfério sul.", "28": "Agora, uma curiosidade para quem gosta de ciência. Essa grade são as linhas de latitude e longitude. Com apenas dois números, você localiza qualquer ponto da Terra, de um polo ao outro. Cada linha é uma coordenada, e cada coordenada é um lugar.", "29": "Chegamos ao fim da viagem. Um único planeta. Bilhões de histórias. E possibilidades infinitas. Se esse filme te fez olhar para o nosso mundo com outros olhos, então ele cumpriu o seu papel. Vecorion."};
+const QS={"3": ["Se a Terra gira tão rápido, por que a gente não sente?", "Mas então por que a gente não sente?"], "7": ["Quanto da Terra é coberto por água?", "Será que você sabe quanto da Terra é água?"], "12": ["A Austrália é país ou continente?", "Muita gente pergunta se a Austrália é país ou continente."], "17": ["A Amazônia é mesmo o pulmão do mundo?", "Dizem que ela é o pulmão do mundo"], "24": ["O que os vazios no mapa de luzes revelam?", "Repara nos vazios"]};
+const ENERGY={"1": 0, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 0, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2, "13": 2, "14": 2, "15": 2, "16": 2, "17": 1, "18": 1, "19": 0, "20": 2, "21": 3, "22": 3, "23": 3, "24": 1, "25": 3, "26": 3, "27": 2, "28": 1, "29": 1};
+SCF.forEach((r,n)=>{r[15]=FACTS[n+1]||null;r[14]=NARR[n+1]||r[14];r[16]=QS[n+1]||null;r[17]=ENERGY[n+1]||0});
 const SC_DROP=[6,16,19,26,27,28];
-const SC=SHORT?SCF.map((r,n)=>[r,n+1]).filter(x=>!SC_DROP.includes(x[1])).map(([r,n])=>{const c=r.slice();if(n!==1&&n!==2&&n!==29)c[0]=Math.min(c[0],Math.max(10,Math.ceil((c[14]||'').length/13)+5));return c}):SCF;
+const SC=SCF.map((r,n)=>[r,n+1]).filter(x=>!SHORT||!SC_DROP.includes(x[1])).map(([r,n])=>{const c=r.slice(),need=Math.ceil((c[14]||'').length/13)+4;c[0]=SHORT&&n!==1&&n!==2&&n!==29?Math.max(10,need):Math.max(c[0],need);return c});
 
 let si=0,st=0,CS=null;const fadeEl=$('#fade'),capEl=$('#cap');
 function startScene(i){vsStop();si=i%SC.length;st=0;CS=SC[si];setMode(CS[3]);sunLock=CS[4];speed=CS[5];$('#ct').textContent=CS[1];$('#cs').textContent=CS[2];if(!hlC&&earth)initHL();hlDraw(CS[13]||{});$('#sub').textContent=CS[14]||'';mxScene(si)}
-function director(dt){st+=dt;vsTick();const o=CS[13]||{},dur=CS[0],u=clamp(st/dur,0,1),e=.3*u+.7*u*u*(3-2*u),m=(a,b)=>a+(b-a)*e,Dn=D0(),d0=CS[8]<0?Dn:CS[8],d1=CS[11]<0?Dn:CS[11];
- const lat=m(CS[6],CS[9]);let lon=m(CS[7],CS[10]);const d=m(d0,d1);if(CS[12])lon+=toLL(sunDir).lon;
+function director(dt){st+=dt;vsTick();const o=CS[13]||{},dur=CS[0],u=clamp(st/dur,0,1),e=si%3===1?1-Math.pow(1-u,2.4):.3*u+.7*u*u*(3-2*u),m=(a,b)=>a+(b-a)*e,Dn=D0(),d0=CS[8]<0?Dn:CS[8],d1=CS[11]<0?Dn:CS[11];
+ const lat=m(CS[6],CS[9]);let lon=m(CS[7],CS[10]);const d=m(d0,d1);if(CS[12])lon+=toLL(sunDir).lon;if(!o.sym)lon+=(si%2?1:-1)*12*u;
  tgt.lat=camState.lat=lat;tgt.lon=camState.lon=lon;tgt.dist=camState.dist=d;
  SW=o.sym?clamp((d-3)/(Dn-3),0,1):0;setInf(o.sym?clamp((d-5.5)/3,0,1):0);
  const fi=o.nfi?0:1.2,fo=o.nfo?0:1;fadeEl.style.opacity=PAUSED?0:Math.max(st<fi?1-st/fi:0,st>dur-fo?(st-(dur-fo))/fo:0);
@@ -487,7 +500,7 @@ function recFinish(now){if(recEnding)return;recEnding=true;
 $('#rec').onclick=recStart;
 addEventListener('keydown',e=>{if(e.key==='Escape'&&REC)recFinish(true)});
 /* ===== TRILHA SONORA + EFEITOS (sintetizados por código, sem arquivos) ===== */
-const MX={ctx:null,on:false,bus:null,m:null,cur:null,n:0,nz:null};
+const MX={ctx:null,on:false,bus:null,m:null,cur:null,n:0,nz:null,bt:0,bE:0};
 const PROG=[[57,60,64],[57,60,65],[55,60,64],[55,59,62],[57,60,64],[57,60,65],[57,62,65],[56,59,64]],BASS=[33,29,36,31,33,29,38,40],mf=m=>440*Math.pow(2,(m-69)/12);
 function mxInit(){if(MX.ctx){if(MX.ctx.state==='suspended')MX.ctx.resume();return}
  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;const c=MX.ctx=new AC();
@@ -497,25 +510,51 @@ function mxInit(){if(MX.ctx){if(MX.ctx.state==='suspended')MX.ctx.resume();retur
  const len=c.sampleRate*3.5|0,ib=c.createBuffer(2,len,c.sampleRate);for(let ch=0;ch<2;ch++){const d=ib.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6)}
  const cv=c.createConvolver();cv.buffer=ib;const rg=c.createGain();rg.gain.value=.55;bus.connect(cv);cv.connect(rg);rg.connect(m);
  const nb=c.createBuffer(1,c.sampleRate*4|0,c.sampleRate),nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;MX.nz=nb}
-function mxFade(){const p=MX.cur;if(!p||!MX.ctx)return;MX.cur=null;const t=MX.ctx.currentTime;p.g.gain.cancelScheduledValues(t);p.g.gain.setValueAtTime(p.g.gain.value,t);p.g.gain.linearRampToValueAtTime(0,t+1.8);setTimeout(()=>{p.os.forEach(o=>{try{o.stop()}catch(e){}});try{p.g.disconnect()}catch(e){}},2600)}
+function mxFade(){const p=MX.cur;if(!p||!MX.ctx)return;MX.cur=null;const t=MX.ctx.currentTime;MX.bE=0;
+ p.g.gain.cancelScheduledValues(t);p.g.gain.setValueAtTime(p.g.gain.value,t);p.g.gain.linearRampToValueAtTime(0,t+1.8);
+ p.gb.gain.cancelScheduledValues(t);p.gb.gain.setValueAtTime(p.gb.gain.value,t);p.gb.gain.linearRampToValueAtTime(0,t+.12);
+ setTimeout(()=>{p.os.forEach(o=>{try{o.stop()}catch(e){}});try{p.g.disconnect();p.gb.disconnect()}catch(e){}},2600)}
 function mxNoise(t,len,f0,f1,peak,q){const c=MX.ctx,s=c.createBufferSource();s.buffer=MX.nz;const f=c.createBiquadFilter();f.type='bandpass';f.Q.value=q||1.2;f.frequency.setValueAtTime(f0,t);f.frequency.exponentialRampToValueAtTime(f1,t+len);
  const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+len*.45);g.gain.linearRampToValueAtTime(0,t+len);s.connect(f);f.connect(g);g.connect(MX.bus);s.start(t);s.stop(t+len+.1)}
 function mxBoom(t,peak){const c=MX.ctx,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(30,t+1.4);
  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+3.2);o.connect(g);g.connect(MX.bus);o.start(t);o.stop(t+3.4);mxNoise(t,1.6,900,120,peak*.35,.7)}
-function mxScene(i){if(!MX.on||!MX.ctx)return;const c=MX.ctx,t0=c.currentTime+.08,SCi=SC[i],dur=SCi[0],last=i===SC.length-1,o=SCi[13]||{};
+const BPM=124,BEAT=60/BPM;
+function lifeFX(now){const t=now/1000,f=clamp((camState.dist-.9)*.4,.12,1.2);let pun=0;
+ if(MX.on&&MX.ctx&&MX.bE>=2&&MX.ctx.state==='running'){const ph=(MX.ctx.currentTime-MX.bt)/BEAT;if(ph>=0)pun=Math.exp(-6*(ph%1))*(MX.bE>=3?.016:.009)}
+ return{la:f*(1.1*Math.sin(t*.31)+.5*Math.sin(t*.83+1)),lo:f*(1.6*Math.sin(t*.23+2)+.6*Math.sin(t*.67)),dm:1+.012*Math.sin(t*.5)-pun,roll:.012*Math.sin(t*.37)+.006*Math.sin(t*1.1)}}
+function mxScene(i){if(!MX.on||!MX.ctx)return;const c=MX.ctx,t0=c.currentTime+.08,SCi=SC[i],dur=SCi[0],last=i===SC.length-1,o=SCi[13]||{},E=SCi[17]||0,pE=SC[i-1]?(SC[i-1][17]||0):0,nE=SC[i+1]?(SC[i+1][17]||0):0,build=nE>=2&&nE>E;
  mxFade();
- const g=c.createGain();g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(1,t0+(i===0?5:2.5));g.connect(MX.bus);const os=[];MX.cur={g,os};
+ const g=c.createGain(),gb=c.createGain(),duck=c.createGain();
+ g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(1,t0+(i===0?5:2.5));g.connect(MX.bus);gb.connect(MX.bus);duck.connect(g);
+ const os=[];MX.cur={g,gb,os};MX.bt=t0;MX.bE=E;
  const tone=(type,f,a,b,peak,att,rel,dest,det)=>{const x=c.createOscillator(),y=c.createGain();x.type=type;x.frequency.value=f;if(det)x.detune.value=det;
   y.gain.setValueAtTime(0,a);y.gain.linearRampToValueAtTime(peak,a+att);y.gain.setValueAtTime(peak,Math.max(a+att,b-rel));y.gain.linearRampToValueAtTime(0,b);x.connect(y);y.connect(dest);x.start(a);x.stop(b+.1);os.push(x)};
- const B=10,total=dur+10;
- for(let k=0;k*B<total;k++){const ch=PROG[MX.n%8],bs=BASS[MX.n%8];MX.n++;const ts=t0+k*B,te=ts+B+2.5;
-  const f=c.createBiquadFilter();f.type='lowpass';f.Q.value=.8;f.frequency.setValueAtTime(500,ts);f.frequency.linearRampToValueAtTime(1500,ts+B*.7);f.frequency.linearRampToValueAtTime(600,te);f.connect(g);
+ const B=10,total=dur+10,chords=[];
+ for(let k=0;k*B<total;k++){const ch=PROG[MX.n%8],bs=BASS[MX.n%8];MX.n++;const ts=t0+k*B,te=ts+B+2.5;chords.push({t:ts,bs});
+  const f=c.createBiquadFilter();f.type='lowpass';f.Q.value=.8;f.frequency.setValueAtTime(500,ts);f.frequency.linearRampToValueAtTime(E>=3?2200:1500,ts+B*.7);f.frequency.linearRampToValueAtTime(600,te);f.connect(duck);
   ch.forEach(m=>{tone('sawtooth',mf(m),ts,te,.03,2.5,2.8,f,-7);tone('sawtooth',mf(m),ts,te,.03,2.5,2.8,f,7)});
-  tone('sine',mf(bs),ts,te,i===0?.1:.17,1.2,2.5,g);tone('triangle',mf(bs+12),ts,te,.05,1.5,2.5,g);
-  if(i>=2){for(let j=0;j<B/.3125;j++){const tt=ts+j*.3125,nt=ch[[0,1,2,1][j%4]]+12+(j%8>3?12:0),x=c.createOscillator(),y=c.createGain();
-   x.type='triangle';x.frequency.value=mf(nt);y.gain.setValueAtTime(0,tt);y.gain.linearRampToValueAtTime(.03,tt+.01);y.gain.exponentialRampToValueAtTime(.001,tt+.9);x.connect(y);y.connect(g);x.start(tt);x.stop(tt+1);os.push(x)}}}
+  tone('sine',mf(bs),ts,te,i===0?.1:(E>=2?.1:.17),1.2,2.5,duck);tone('triangle',mf(bs+12),ts,te,.05,1.5,2.5,duck);
+  if(i>=2){const ap=E>=3?.045:.03;for(let j=0;j<B/.3125;j++){const tt=ts+j*.3125,nt=ch[[0,1,2,1][j%4]]+12+(j%8>3?12:0),x=c.createOscillator(),y=c.createGain();
+   x.type='triangle';x.frequency.value=mf(nt);y.gain.setValueAtTime(0,tt);y.gain.linearRampToValueAtTime(ap,tt+.01);y.gain.exponentialRampToValueAtTime(.001,tt+.9);x.connect(y);y.connect(g);x.start(tt);x.stop(tt+1);os.push(x)}}}
+ const rootAt=t=>{let r=chords[0].bs;chords.forEach(x=>{if(x.t<=t)r=x.bs});return r};
+ const nz=(t,len,type,fq,q,v,dec,dest)=>{const s2=c.createBufferSource();s2.buffer=MX.nz;const f=c.createBiquadFilter();f.type=type;f.frequency.value=fq;f.Q.value=q;const y=c.createGain();
+  y.gain.setValueAtTime(v,t);y.gain.exponentialRampToValueAtTime(.0005,t+dec);s2.connect(f);f.connect(y);y.connect(dest);s2.start(t,Math.random()*2.5);s2.stop(t+len);os.push(s2)};
+ const kick=(t,v)=>{const x=c.createOscillator(),y=c.createGain();x.type='sine';x.frequency.setValueAtTime(155,t);x.frequency.exponentialRampToValueAtTime(46,t+.13);
+  y.gain.setValueAtTime(0,t);y.gain.linearRampToValueAtTime(v,t+.004);y.gain.exponentialRampToValueAtTime(.001,t+.42);x.connect(y);y.connect(gb);x.start(t);x.stop(t+.45);os.push(x)};
+ const bass=(t,m,v)=>{const x=c.createOscillator(),f=c.createBiquadFilter(),y=c.createGain();x.type='sawtooth';x.frequency.value=mf(m);f.type='lowpass';f.Q.value=5;f.frequency.setValueAtTime(900,t);f.frequency.exponentialRampToValueAtTime(140,t+.2);
+  y.gain.setValueAtTime(0,t);y.gain.linearRampToValueAtTime(v,t+.008);y.gain.exponentialRampToValueAtTime(.001,t+.24);x.connect(f);f.connect(y);y.connect(gb);x.start(t);x.stop(t+.26);os.push(x)};
+ if(E>0){const endB=t0+dur+1-(build?2.4:0),kv=[.3,.55,.65][E-1],dd=[.3,.5,.6][E-1];
+  for(let n=0;;n++){const t=t0+n*BEAT;if(t>=endB)break;if(E===1&&n<4)continue;const bp=n%4,m=rootAt(t)+12;
+   kick(t,kv);duck.gain.setValueAtTime(1-dd,t);duck.gain.linearRampToValueAtTime(1,t+BEAT*.8);
+   nz(t+BEAT/2,.3,'highpass',7500,.7,E===1?.02:.05,E===1?.05:.2,gb);
+   if(E>=2){nz(t+BEAT*.25,.1,'highpass',9000,.7,E>=3?.03:.012,.04,gb);nz(t+BEAT*.75,.1,'highpass',9000,.7,E>=3?.03:.012,.04,gb);
+    if(bp===1||bp===3){nz(t,.25,'bandpass',1500,.9,E>=3?.13:.1,.18,gb);nz(t+.012,.1,'bandpass',1700,.9,.05,.05,gb)}}
+   if(E===1)bass(t+BEAT/2,m,.05);else if(E===2)bass(t+BEAT/2,m,.11);
+   else{[.25,.5,.75].forEach((q,j)=>bass(t+BEAT*q,m+(j===1?12:0),.09))}}}
  if(i>0)mxNoise(t0,1.6,180,2800,.12);
  if(SCi[1]&&!o.nocap)mxBoom(t0+1.4,.45);
+ if(E>=2&&pE<E)mxBoom(t0,.5);
+ if(build){mxNoise(t0+dur-6,6,300,9000,.2);let t=t0+dur-4,iv=BEAT/2;while(t<t0+dur-.1){const v=.04+.12*(1-(t0+dur-t)/4);const s2=c.createBufferSource();s2.buffer=MX.nz;const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=1900;f.Q.value=.7;const y=c.createGain();y.gain.setValueAtTime(v,t);y.gain.exponentialRampToValueAtTime(.0005,t+.12);s2.connect(f);f.connect(y);y.connect(MX.bus);s2.start(t,Math.random()*2.5);s2.stop(t+.14);t+=iv;iv=Math.max(BEAT/8,iv*.9)}}
  if(last){mxNoise(t0+dur-9,7,200,6500,.2,.9);mxBoom(t0+dur-2,.6);[45,57,60,64,69,72].forEach(m=>tone('sawtooth',mf(m),t0+dur-2,t0+dur+5,.04,.05,4,MX.bus))}}
 $('#mx').onclick=()=>{MX.on=!MX.on;$('#mx').style.opacity=MX.on?1:.45;if(MX.on){mxInit();mxScene(si)}else mxFade()};
 $('#mv').oninput=e=>{if(MX.m)MX.m.gain.value=+e.target.value};
@@ -535,12 +574,13 @@ $('#sv').onclick=()=>{location.search=SHORT?'':'?v=curta'};
 $('#fx').onclick=()=>{const on=document.body.classList.toggle('fx');$('#fx').style.opacity=on?1:.45};
 const cdE=[...$('#card').children],crE=$('#cr'),cdT=['','',''];
 const OPEN=['VECORION APRESENTA'],END=['Um único planeta.','Bilhões de histórias.','Possibilidades infinitas.'];
-let factSi=-1;const factE=$('#fact');
+let factSi=-1,qT=null;const factE=$('#fact'),qaE=$('#qa');
+function wordTime(text,phrase,dur){const k=text.indexOf(phrase);if(k<0)return null;const tot=text.split(/\s+/).filter(Boolean).length,n=text.slice(0,k).split(/\s+/).filter(Boolean).length,a=1.2,b=Math.max(a+4,dur-2.5);return a+n/tot*(b-a)}
 function cardsUpd(){if(!CS)return;
- if(factSi!==si){factSi=si;factE.innerHTML=(CS[15]||[]).map(f=>'<b>'+f[0]+'</b><span>'+f[1]+'</span>').join('')}
- factE.classList.toggle('on',!!CS[15]&&st>3.5&&st<CS[0]-2.5);const d=CS[0],last=si===SC.length-1,first=si===0;let t=['','',''],on=[0,0,0],cr=0;
+ if(factSi!==si){factSi=si;qT=CS[16]?wordTime(CS[14],CS[16][1],CS[0]):null;qaE.lastChild.textContent=CS[16]?CS[16][0]:'';factE.innerHTML=(CS[15]||[]).map(f=>'<b>'+f[0]+'</b><span>'+f[1]+'</span>').join('')}
+ factE.classList.toggle('on',!!CS[15]&&st>3.5&&st<CS[0]-2.5);qaE.classList.toggle('on',qT!==null&&st>qT-.2&&st<qT+7.5);const d=CS[0],last=si===SC.length-1,first=si===0;let t=['','',''],on=[0,0,0],cr=0;
  if(first){t[0]=OPEN[0];on[0]=st>2.5&&st<d-4}
- else if(last){t=END.slice();const T=[2,11.5,21.8],off=st>d-2.5;on=T.map(x=>st>x&&!off?1:0);cr=st>d-9&&st<d-1.5}
+ else if(last){t=END.slice();const T=END.map(x=>wordTime(CS[14].toLowerCase(),x.toLowerCase(),d)||99),off=st>d-2.5;on=T.map(x=>st>x&&!off?1:0);cr=st>d-9&&st<d-1.5}
  cdE.forEach((e,k)=>{if(cdT[k]!==t[k]){cdT[k]=t[k];e.textContent=t[k]}e.classList.toggle('on',!!on[k])});
  crE.textContent=cr||last?'Imagens: NASA Earth Observatory · Natural Earth · three-globe':'';crE.classList.toggle('on',!!cr)}
 build().then(()=>{setMode(0);srcPanel();autoRot=false;startScene(0);prog(100,'Pronto');const l=$('#load');l.style.opacity=0;setTimeout(()=>l.remove(),900);requestAnimationFrame(loop)}).catch(e=>fail(e.message||e));
