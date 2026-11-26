@@ -95,4 +95,4 @@ Sem os arquivos em `texturas/`, o filme usa as texturas padrão da biblioteca th
 Imagens globais em 8K melhoram a visão geral, mas não mostram ruas e prédios quando se aproxima muito.
 
 ## Créditos
-Imagens: NASA Earth Observatory / Blue Marble (Reto Stöckli). Fronteiras: Natural Earth. Texturas padrão: three-globe. Código, trilha e narração: Vecorion.
+Imagens: NASA Earth Observatory / Blue Marble (Reto Stöckli). Fronteiras: Natural Earth. Texturas padrão: three-globe. `texturas/nuvens.jpg` e `texturas/noite.jpg` foram derivadas de imagens globais enviadas pelo autor (origem NASA; licença e atribuição a confirmar). Código, trilha e narração: Vecorion.
