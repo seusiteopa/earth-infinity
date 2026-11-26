@@ -1,0 +1,7 @@
+Coloque aqui as texturas (opcional). Nomes exatos:
+dia.jpg     - Terra de dia (NASA Blue Marble, 5400x2700 ou 8192x4096)
+noite.jpg   - Terra a noite (NASA Black Marble)
+nuvens.jpg  - nuvens em tons de cinza (branco = nuvem)
+relevo.jpg  - relevo/topografia em tons de cinza
+Se algum arquivo faltar, o filme usa a base padrao automaticamente.
+Use JPG de ate 8192 px de largura.

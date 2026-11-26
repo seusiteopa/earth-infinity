@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EARTH INFINITY</title>
+<style>
+:root{--c:#5fd4ff;--bg:rgba(5,12,26,.74);--ln:#5fd4ff44}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:#dff6ff;font:12px/1.45 "Segoe UI",system-ui,sans-serif;overflow:hidden}
+canvas{display:block;touch-action:none}
+#top{position:fixed;top:0;left:0;right:0;height:42px;display:flex;align-items:center;gap:20px;padding:0 14px;background:linear-gradient(#030a16dd,transparent);z-index:5;pointer-events:none;white-space:nowrap;overflow:hidden}
+#top b{color:var(--c);font-size:15px;letter-spacing:.32em;font-weight:600}
+#top span{opacity:.85}
+.panel{position:fixed;background:var(--bg);border:1px solid var(--ln);border-radius:10px;backdrop-filter:blur(8px);z-index:6;box-shadow:0 0 24px #0af2}
+#side{top:48px;left:10px;width:216px;max-height:calc(100% - 60px);overflow:auto;padding:10px}
+#info{right:10px;bottom:10px;width:250px;padding:10px 12px}
+#src{right:10px;top:48px;width:250px;padding:8px 12px;font-size:11px}
+h4{margin:10px 0 5px;font-size:11px;color:var(--c);font-weight:600;letter-spacing:.06em}
+h4:first-child{margin-top:0}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+button,select,input[type=number]{background:#0b2238;color:#dff6ff;border:1px solid var(--ln);border-radius:6px;padding:5px 6px;font:inherit;cursor:pointer}
+button:hover{background:#12395c}button.on{background:#0d6d9b;border-color:var(--c);box-shadow:0 0 8px #5fd4ff88}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--c)}
+label{display:flex;align-items:center;gap:6px;padding:1px 0;cursor:pointer}
+input[type=range]{width:100%}
+.row{display:flex;gap:4px;margin-top:4px}.row>*{flex:1;min-width:0}
+#info div,#src div{display:flex;justify-content:space-between;gap:8px}
+#info .n{font-size:15px;color:#fff;display:block;margin-bottom:2px}
+.tag{font-size:10px;padding:0 5px;border-radius:4px;border:1px solid}
+.R{color:#6dffa8}.S{color:#ffc46b}.P{color:#c9a6ff}.X{color:#ff7b7b}
+#labels{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:3}
+.lb{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;text-shadow:0 0 4px #000,0 0 8px #000;pointer-events:auto;cursor:pointer}
+.lb.cont{font-size:15px;letter-spacing:.25em;color:#bfe9ff;pointer-events:none}
+.lb.ctry{font-size:11px;letter-spacing:.14em;color:#d6f3ff}
+.lb.city{font-size:11px;color:#ffe9a8}.lb.city::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#ffd35e;margin-right:5px;box-shadow:0 0 6px #ffd35e}
+.lb.cap{color:#fff}
+#load{position:fixed;inset:0;background:radial-gradient(#06182e,#000);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s}
+#load h1{margin:0;letter-spacing:.5em;color:var(--c);font-weight:300;font-size:26px}
+#bar{width:260px;height:3px;background:#123;border-radius:3px;overflow:hidden}#bar i{display:block;height:100%;width:0;background:var(--c);box-shadow:0 0 10px var(--c);transition:width .3s}
+#err{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:30;color:#ff9b9b;background:#200;padding:14px;border-radius:8px;display:none;max-width:80%}
+#tg{display:none}
+@media(max-width:700px){#src{display:none}#side{width:170px}#info{width:200px}#top span:nth-child(n+4){display:none}}
+@media(prefers-reduced-motion:reduce){#load{transition:none}}
+#top,#side,#src,#info{display:none!important}
+.lb{pointer-events:none!important}
+#fade{position:fixed;inset:0;background:#000;z-index:9;pointer-events:none;opacity:1}
+.bar{position:fixed;left:0;right:0;height:7vh;background:#000;z-index:10;pointer-events:none}
+#cap{position:fixed;left:6vw;top:calc(7vh + 14px);z-index:11;pointer-events:none;opacity:0;transition:opacity 1s;text-shadow:0 0 12px #000}
+#cap.on{opacity:1}
+#ct{font-size:clamp(20px,5vw,44px);font-weight:200;letter-spacing:.28em;color:#fff}
+#cs{margin-top:6px;font-size:clamp(11px,2.2vw,16px);letter-spacing:.08em;color:#9fdcff}
+#tl{position:fixed;left:0;right:0;bottom:0;height:max(7vh,46px);z-index:12;display:flex;align-items:center;gap:8px;padding:0 10px;background:#000;font-size:11px}
+#tl button{min-width:34px;height:32px;font-size:15px}
+#tr{flex:1;min-width:50px;accent-color:#5fd4ff}
+#tt{white-space:nowrap;font-variant-numeric:tabular-nums}
+#ts{max-width:34vw;height:32px}
+@media(max-width:600px){#ts{display:none}#tt{font-size:10px}}
+#sub{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(max(7vh,46px) + 8px);width:min(88vw,760px);text-align:center;z-index:11;font-size:clamp(12px,2.6vw,17px);line-height:1.4;color:#fff;text-shadow:0 0 6px #000,0 0 12px #000;background:rgba(0,0,0,.4);padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .6s;pointer-events:none}
+#sub.on{opacity:1}
+#rot{position:fixed;inset:6vh 4vw;background:rgba(5,12,26,.97);border:1px solid #5fd4ff55;border-radius:10px;z-index:30;display:none;flex-direction:column;padding:10px;gap:8px}
+#rot.on{display:flex}.rh{display:flex;justify-content:space-between;align-items:center;color:var(--c)}
+#ra{flex:1;background:#06101e;color:#dff6ff;border:1px solid #5fd4ff33;border-radius:6px;padding:8px;font:13px/1.55 system-ui;resize:none}
+@media(max-width:600px){#pv{display:none}#tl{gap:4px;padding:0 6px}}
+</style></head><body>
+<div id="load"><h1>EARTH INFINITY</h1><div id="bar"><i></i></div><div id="lt">Inicializando…</div></div>
+<div id="err"></div>
+<div id="top"><b>EARTH INFINITY</b><span id="utc">UTC --:--:--</span><span id="dt">--</span><span id="cur">LAT -- LON --</span><span id="fps">-- FPS</span><span id="lvl">Nível 1</span></div>
+<div id="labels"></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
+<div class="panel" id="side">
+<h4>MODOS</h4><div class="modes" id="modes"></div>
+<h4>CAMADAS</h4><div id="layers"></div>
+<h4>TEMPO</h4><label>Velocidade <span id="spv">1×</span></label><input type="range" id="sp" min="0" max="4" step=".05" value="0" aria-label="Velocidade da simulação">
+<div class="row"><button id="bsun">Sol: auto</button><button id="bauto" class="on">Rotação</button></div>
+<h4>CÂMERA</h4>
+<select id="sel" style="width:100%" aria-label="Foco"></select>
+<div class="row"><input type="number" id="la" placeholder="lat" step="any"><input type="number" id="lo" placeholder="lon" step="any"><button id="go">Ir</button></div>
+<div class="row"><button id="home">Visão global</button><button id="fs">Tela cheia</button></div>
+</div>
+<div class="panel" id="src"></div>
+<div class="panel" id="info"></div>
+<script>
+/* TEXTURAS PRÓPRIAS (opcional): coloque os arquivos na pasta "texturas", ao lado deste HTML, hospedado (ex.: Netlify).
+   Se um arquivo não existir, o filme usa a base padrão automaticamente.
+   nuvens: imagem em tons de cinza (branco = nuvem). Se for PNG com transparência, use nuvensAlfa:true. */
+window.TEXTURAS={dia:"texturas/dia.jpg",noite:"texturas/noite.jpg",nuvens:"texturas/nuvens.jpg",relevo:"texturas/relevo.jpg",nuvensAlfa:false};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const fail=m=>{const e=$('#err');e.style.display='block';e.textContent='Erro: '+m};
+window.addEventListener('error',e=>fail(e.message));
+if(typeof THREE==='undefined'){fail('Three.js não carregou (sem conexão com o CDN).');}
+else main();
+function main(){
+const D=Math.PI/180,clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),wr=l=>(((l+540)%360)+360)%360-180;
+const ll=(lat,lon,r=1)=>{const p=(90-lat)*D,t=(lon+180)*D;return new THREE.Vector3(-r*Math.sin(p)*Math.cos(t),r*Math.cos(p),r*Math.sin(p)*Math.sin(t))};
+const toLL=v=>{const n=v.clone().normalize();return{lat:Math.asin(n.y)/D,lon:wr(Math.atan2(n.z,-n.x)/D-180)}};
+/* ---------- dados ---------- */
+const CITY=[["Tóquio",35.68,139.69,"Japão"],["Délhi",28.61,77.21,"Índia",1],["Xangai",31.23,121.47,"China"],["Pequim",39.9,116.41,"China",1],["São Paulo",-23.55,-46.63,"Brasil"],["Brasília",-15.79,-47.88,"Brasil",1],["Rio de Janeiro",-22.91,-43.17,"Brasil"],["Manaus",-3.12,-60.02,"Brasil"],["Cidade do México",19.43,-99.13,"México",1],["Nova York",40.71,-74.01,"EUA"],["Washington",38.91,-77.04,"EUA",1],["Los Angeles",34.05,-118.24,"EUA"],["Anchorage",61.22,-149.9,"EUA"],["Londres",51.51,-0.13,"Reino Unido",1],["Paris",48.86,2.35,"França",1],["Berlim",52.52,13.4,"Alemanha",1],["Moscou",55.76,37.62,"Rússia",1],["Istambul",41.01,28.98,"Turquia"],["Cairo",30.04,31.24,"Egito",1],["Lagos",6.52,3.38,"Nigéria"],["Joanesburgo",-26.2,28.05,"África do Sul"],["Cidade do Cabo",-33.92,18.42,"África do Sul"],["Nairóbi",-1.29,36.82,"Quênia",1],["Dubai",25.2,55.27,"Emirados Árabes"],["Mumbai",19.08,72.88,"Índia"],["Seul",37.57,126.98,"Coreia do Sul",1],["Singapura",1.35,103.82,"Singapura",1],["Sydney",-33.87,151.21,"Austrália"],["Camberra",-35.28,149.13,"Austrália",1],["Buenos Aires",-34.6,-58.38,"Argentina",1],["Lima",-12.05,-77.04,"Peru",1],["Bogotá",4.71,-74.07,"Colômbia",1],["Santiago",-33.45,-70.67,"Chile",1],["Toronto",43.65,-79.38,"Canadá"],["Ottawa",45.42,-75.7,"Canadá",1],["Roma",41.9,12.5,"Itália",1],["Madri",40.42,-3.7,"Espanha",1],["Jacarta",-6.21,106.85,"Indonésia",1],["Bangcoc",13.76,100.5,"Tailândia",1],["Reykjavik",64.15,-21.94,"Islândia",1]];
+const CTRY=[["Brasil",-10,-52],["EUA",39,-98],["Canadá",58,-105],["México",24,-102],["Argentina",-36,-65],["Rússia",60,90],["China",35,103],["Índia",22,79],["Austrália",-25,134],["Egito",26,30],["Nigéria",9,8],["África do Sul",-29,24],["França",46.5,2.5],["Alemanha",51,10],["Reino Unido",54,-2],["Japão",36,138],["Indonésia",-2,118],["Arábia Saudita",24,45],["Turquia",39,35],["Espanha",40,-3.5],["Peru",-9,-75],["Colômbia",4,-73],["Chile",-30,-71],["RD Congo",-3,23],["Etiópia",8,39],["Irã",32,54],["Cazaquistão",48,67],["Groenlândia",72,-40],["Itália",42.5,12.5],["Tailândia",15,101]];
+const CONT=[["AMÉRICA DO NORTE",45,-100],["AMÉRICA DO SUL",-15,-60],["EUROPA",50,15],["ÁFRICA",5,20],["ÁSIA",45,90],["OCEANIA",-25,135],["ANTÁRTIDA",-80,0]];
+/* ---------- ruído / texturas procedurais ---------- */
+const H=(x,y,z)=>{const n=Math.sin(x*127.1+y*311.7+z*74.7)*43758.5453;return n-Math.floor(n)};
+function VN(x,y,z){const xi=Math.floor(x),yi=Math.floor(y),zi=Math.floor(z),xf=x-xi,yf=y-yi,zf=z-zi,u=xf*xf*(3-2*xf),v=yf*yf*(3-2*yf),w=zf*zf*(3-2*zf);let r=0;for(let i=0;i<8;i++){const a=i&1,b=(i>>1)&1,c=(i>>2)&1;r+=H(xi+a,yi+b,zi+c)*(a?u:1-u)*(b?v:1-v)*(c?w:1-w)}return r}
+function FB(x,y,z,o){let s=0,a=.5;for(let i=0;i<o;i++){s+=a*VN(x,y,z);x*=2.03;y*=2.03;z*=2.03;a*=.5}return s}
+const mkc=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
+function procEarth(){
+ const W=512,Hh=256,cd=mkc(W,Hh),cn=mkc(W,Hh),cb=mkc(W,Hh),xd=cd.getContext('2d'),xn=cn.getContext('2d'),xb=cb.getContext('2d');
+ const a=xd.createImageData(W,Hh),b=xn.createImageData(W,Hh),c=xb.createImageData(W,Hh);
+ for(let y=0;y<Hh;y++){const lat=90-(y+.5)/Hh*180,al=Math.abs(lat);for(let x=0;x<W;x++){const lon=(x+.5)/W*360-180,v=ll(lat,lon),e=FB(v.x*2.2+5,v.y*2.2+5,v.z*2.2+5,6),land=e>.5,h=land?Math.min(1,(e-.5)*3.2):0;let r,g,bl;
+  if(!land){const d=Math.min(1,(.5-e)*4);r=10+20*(1-d);g=50+60*(1-d);bl=110+60*(1-d)}
+  else{const dry=FB(v.x*3+20,v.y*3,v.z*3,3);if(h>.6){r=g=bl=130+h*110}else if(dry>.52&&al<38){r=200;g=170;bl=110}else{r=50+h*120;g=100+h*60-dry*40;bl=45+h*40}}
+  if(al>72)r=g=bl=235;
+  const i=(y*W+x)*4;a.data.set([r,g,bl,255],i);
+  const L=land&&al<66?Math.max(0,FB(v.x*9,v.y*9,v.z*9,3)-.6)*5:0;b.data.set([255*L,190*L,100*L,255],i);
+  c.data.set([h*255,h*255,h*255,255],i)}}
+ xd.putImageData(a,0,0);xn.putImageData(b,0,0);xb.putImageData(c,0,0);return[cd,cn,cb]}
+function procCloud(){const W=512,Hh=256,c=mkc(W,Hh),x=c.getContext('2d'),d=x.createImageData(W,Hh);
+ for(let y=0;y<Hh;y++){const lat=90-(y+.5)/Hh*180;for(let i=0;i<W;i++){const v=ll(lat,(i+.5)/W*360-180),n=FB(v.x*3+40,v.y*3.6,v.z*3,5),al=clamp((n-.45)*4.2,0,1)*255;d.data.set([255,255,255,al],(y*W+i)*4)}}
+ x.putImageData(d,0,0);return c}
+function dotTex(){const c=mkc(64,64),x=c.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'#fff');g.addColorStop(.35,'rgba(255,255,255,.6)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)}
+function stormTex(){const c=mkc(256,256),x=c.getContext('2d');for(let k=0;k<3;k++)for(let i=0;i<260;i++){const t=i*.055+k*2.094,r=6+i*.42,a=1-i/300;x.fillStyle=`rgba(255,255,255,${a*.5})`;x.beginPath();x.arc(128+r*Math.cos(t),128+r*Math.sin(t),2+i*.04,0,7);x.fill()}
+ const g=x.createRadialGradient(128,128,0,128,128,128);g.addColorStop(0,'rgba(255,255,255,.45)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,256,256);x.fillStyle='rgba(10,30,60,.9)';x.beginPath();x.arc(128,128,7,0,7);x.fill();return new THREE.CanvasTexture(c)}
+/* ---------- renderer / cena ---------- */
+const R=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+let pr=Math.min(devicePixelRatio||1,innerWidth<800?1.5:2);R.setPixelRatio(pr);R.setSize(innerWidth,innerHeight);document.body.prepend(R.domElement);
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.02,300);
+const sunL=new THREE.DirectionalLight(0xffffff,1.25);scene.add(sunL,new THREE.AmbientLight(0x223355,.35));
+const dot=dotTex(),G={};
+const stars=(()=>{const n=4000,p=new Float32Array(n*3),c=new Float32Array(n*3);for(let i=0;i<n;i++){const u=Math.random()*2-1,th=Math.random()*6.2832,s=Math.sqrt(1-u*u),v=new THREE.Vector3(s*Math.cos(th)*120,u*120,s*Math.sin(th)*120);p.set([v.x,v.y,v.z],i*3);const t=.6+Math.random()*.4;c.set([t,t,.8+Math.random()*.2],i*3)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));return new THREE.Points(g,new THREE.PointsMaterial({size:.5,vertexColors:true,sizeAttenuation:false,map:dot,transparent:true,depthWrite:false}))})();
+scene.add(stars);
+const sunSpr=new THREE.Sprite(new THREE.SpriteMaterial({map:dot,color:0xfff2cc,blending:THREE.AdditiveBlending,depthWrite:false}));sunSpr.scale.set(26,26,1);scene.add(sunSpr);
+/* ---------- carregamento ---------- */
+const prog=(p,t)=>{$('#bar i').style.width=p+'%';$('#lt').textContent=t};
+const base='https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/';
+const loadT=u=>new Promise(res=>{const l=new THREE.TextureLoader();l.setCrossOrigin('anonymous');const to=setTimeout(()=>res(null),10000);l.load(u,t=>{clearTimeout(to);res(t)},undefined,()=>{clearTimeout(to);res(null)})});
+const SRC={tex:'X',borders:'X'};
+let cloudM2,earth,cloudM,atm,tempM,bord=null,WM=null,uni;
+async function build(){
+ prog(8,'Texturas de satélite…');
+ const TX=window.TEXTURAS||{},pick=async(a,b2)=>(a&&await loadT(a))||await loadT(b2);let [d,n,b]=await Promise.all([pick(TX.dia,base+'earth-blue-marble.jpg'),pick(TX.noite,base+'earth-night.jpg'),pick(TX.relevo,base+'earth-topology.png')]);const cl=TX.nuvens?await loadT(TX.nuvens):null;
+ prog(45,'Gerando camadas procedurais…');
+ await new Promise(r=>setTimeout(r,30));
+ if(d&&n&&b)SRC.tex='R';else{const [cd,cn,cb]=procEarth();d=d||new THREE.CanvasTexture(cd);n=n||new THREE.CanvasTexture(cn);b=b||new THREE.CanvasTexture(cb);SRC.tex='P'}
+ const MT=Math.min(R.capabilities.maxTextureSize||2048,innerWidth<800?2048:4096);
+ const shrink=t=>{const im=t.image;if(!im||!im.width||im.width<=MT)return t;const w=MT,h=Math.round(im.height*MT/im.width),c=mkc(w,h);c.getContext('2d').drawImage(im,0,0,w,h);t.dispose();return new THREE.CanvasTexture(c)};
+ [d,n,b]=[d,n,b].map(shrink);
+ [d,n,b].forEach(t=>{t.anisotropy=R.capabilities.getMaxAnisotropy();t.needsUpdate=true});
+ try{const c=mkc(360,180),x=c.getContext('2d');x.drawImage(d.image,0,0,360,180);WM=x.getImageData(0,0,360,180).data}catch(e){WM=null}
+ uni={tD:{value:d},tN:{value:n},tB:{value:b},sun:{value:new THREE.Vector3(1,0,0)},mode:{value:0},grid:{value:0},uZ:{value:0}};
+ earth=new THREE.Mesh(new THREE.SphereGeometry(1,128,64),new THREE.ShaderMaterial({uniforms:uni,
+ vertexShader:`varying vec3 vN,vP;varying vec2 vUv;void main(){vN=normal;vUv=uv;vP=(modelMatrix*vec4(position,1.)).xyz;gl_Position=projectionMatrix*viewMatrix*vec4(vP,1.);}`,
+ fragmentShader:`uniform sampler2D tD,tN,tB;uniform vec3 sun;uniform float mode,grid,uZ;varying vec3 vN,vP;varying vec2 vUv;
+ void main(){vec3 n=normalize(vN),v=normalize(cameraPosition-vP);float l=dot(n,sun);float df=smoothstep(-.08,.14,l);
+ vec3 d=texture2D(tD,vUv).rgb,nt=texture2D(tN,vUv).rgb;float h=texture2D(tB,vUv).r;vec3 col;
+ if(mode>.5&&mode<1.5){vec3 w=vec3(.02,.1,.25);vec3 g=mix(vec3(.1,.5,.2),vec3(.85,.8,.3),smoothstep(.1,.35,h));g=mix(g,vec3(.5,.3,.15),smoothstep(.35,.6,h));g=mix(g,vec3(1.),smoothstep(.6,.9,h));col=(h<.03?w:g)*(.3+.7*clamp(l*1.4+.35,0.,1.));}
+ else if(mode>1.5){col=d*.04+nt*2.2;}
+ else{float e=1./2048.;vec3 ea=normalize(cross(vec3(0.,1.,0.),n)),no=cross(n,ea);float hE=texture2D(tB,vUv+vec2(e,0.)).r-texture2D(tB,vUv-vec2(e,0.)).r,hN=texture2D(tB,vUv+vec2(0.,e)).r-texture2D(tB,vUv-vec2(0.,e)).r;d*=clamp(1.-(dot(sun,ea)*hE+dot(sun,no)*hN)*8.,.6,1.5);d*=1.+(fract(sin(dot(floor(vUv*vec2(6000.,3000.)),vec2(12.9898,78.233)))*43758.5453)-.5)*.2*uZ;col=d*(.035+max(l,0.)*1.15)+nt*(1.-df)*1.7;col+=vec3(1.,.42,.15)*exp(-pow(l*6.,2.))*.22*d;
+ float wt=step(d.r+.04,d.b)*step(d.r,.45);vec3 hh=normalize(sun+v);col+=vec3(1.,.95,.85)*pow(max(dot(n,hh),0.),90.)*.7*wt*df;}
+ col+=vec3(.25,.55,1.)*pow(1.-max(dot(n,v),0.),3.)*.6*(.15+.85*df);
+ if(grid>.5){float gx=abs(fract(vUv.x*24.)-.5),gy=abs(fract(vUv.y*12.)-.5);col+=vec3(0.,.5,.7)*(smoothstep(.485,.5,gx)+smoothstep(.485,.5,gy))*.6;}
+ gl_FragColor=vec4(col,1.);}`}));
+ scene.add(earth);
+ cloudM=new THREE.Mesh(new THREE.SphereGeometry(1.012,96,48),(cl?new THREE.MeshLambertMaterial(TX.nuvensAlfa?{map:cl,transparent:true,opacity:.85,depthWrite:false}:{color:0xffffff,alphaMap:cl,transparent:true,opacity:.85,depthWrite:false}):new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(procCloud()),transparent:true,opacity:.85,depthWrite:false})));scene.add(cloudM);cloudM2=new THREE.Mesh(new THREE.SphereGeometry(1.026,64,32),cloudM.material.clone());cloudM2.material.opacity=.4;cloudM2.rotation.y=2.1;scene.add(cloudM2);
+ atm=new THREE.Mesh(new THREE.SphereGeometry(1.085,96,48),new THREE.ShaderMaterial({uniforms:{sun:uni.sun},transparent:true,blending:THREE.AdditiveBlending,side:THREE.BackSide,depthWrite:false,
+ vertexShader:`varying vec3 vW,vP;void main(){vW=normalize(mat3(modelMatrix)*normal);vec4 w=modelMatrix*vec4(position,1.);vP=w.xyz;gl_Position=projectionMatrix*viewMatrix*w;}`,
+ fragmentShader:`uniform vec3 sun;varying vec3 vW,vP;void main(){vec3 v=normalize(cameraPosition-vP);float c=-dot(vW,v);float i=pow(smoothstep(0.,.33,c),1.6)*(1.-smoothstep(.33,.5,c));float ls=dot(vW,sun);
+ vec3 col=mix(vec3(.2,.5,1.),vec3(1.,.5,.25),exp(-pow(ls*3.5,2.))*.55);i*=.2+.8*smoothstep(-.35,.5,ls);gl_FragColor=vec4(col*i*1.7,i);}`}));scene.add(atm);
+ tempM=new THREE.Mesh(new THREE.SphereGeometry(1.006,64,32),new THREE.ShaderMaterial({transparent:true,depthWrite:false,
+ vertexShader:`varying vec3 vN;varying vec2 vUv;void main(){vN=normal;vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+ fragmentShader:`varying vec3 vN;varying vec2 vUv;void main(){float x=1.-abs(asin(vN.y))/1.5708;x=clamp(x+.07*sin(vUv.x*40.+vUv.y*25.)*sin(vUv.y*9.),0.,1.);vec3 c=x<.33?mix(vec3(.2,.3,1.),vec3(.1,.9,.9),x/.33):x<.66?mix(vec3(.1,.9,.9),vec3(1.,.9,.2),(x-.33)/.33):mix(vec3(1.,.9,.2),vec3(1.,.2,.1),(x-.66)/.34);gl_FragColor=vec4(c,.38);}`}));scene.add(tempM);
+ /* lua */
+ const mc=mkc(256,128),mx=mc.getContext('2d'),md=mx.createImageData(256,128);for(let y=0;y<128;y++)for(let x=0;x<256;x++){const v=ll(90-y/128*180,x/256*360-180),n=FB(v.x*5,v.y*5,v.z*5,5),g=70+n*150;md.data.set([g,g,g*.97,255],(y*256+x)*4)}mx.putImageData(md,0,0);
+ G.moon=new THREE.Mesh(new THREE.SphereGeometry(.27,48,24),new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(mc)}));scene.add(G.moon);
+ const om=[];for(let i=0;i<=128;i++){const a=i/128*6.2832;om.push(new THREE.Vector3(8*Math.cos(a),8*Math.sin(a)*.09,8*Math.sin(a)))}
+ G.orbit=new THREE.Line(new THREE.BufferGeometry().setFromPoints(om),new THREE.LineBasicMaterial({color:0x5fd4ff,transparent:true,opacity:.12}));scene.add(G.orbit);
+ prog(65,'Cidades, voos e tráfego…');
+ buildAgents();buildStorms();buildLabels();
+ prog(80,'Fronteiras (Natural Earth)…');
+ fetchBorders();
+}
+const water=(lat,lon)=>{if(!WM)return true;const x=clamp(Math.floor(lon+180),0,359),y=clamp(Math.floor(90-lat),0,179),i=(y*360+x)*4;return WM[i+2]>WM[i]+15&&WM[i]<120};
+async function fetchBorders(){
+ try{const ctl=new AbortController();setTimeout(()=>ctl.abort(),9000);
+  let j=null;for(const res of ['50m','110m']){try{const c2=new AbortController(),to=setTimeout(()=>c2.abort(),res==='50m'?25000:9000);const r=await fetch('https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@v5.1.2/geojson/ne_'+res+'_admin_0_countries.geojson',{signal:c2.signal});j=await r.json();clearTimeout(to);break}catch(e){}}if(!j)throw 0;const p=[];GJ=j.features;
+  const ring=rg=>{for(let i=0;i<rg.length-1;i++){const a=ll(rg[i][1],rg[i][0],1.0015),b=ll(rg[i+1][1],rg[i+1][0],1.0015);p.push(a.x,a.y,a.z,b.x,b.y,b.z)}};
+  j.features.forEach(f=>{const g=f.geometry;if(!g)return;(g.type==='Polygon'?[g.coordinates]:g.coordinates).forEach(pl=>pl.forEach(ring))});
+  const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(p),3));
+  bord=new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0x6fe0ff,transparent:true,opacity:.7}));scene.add(bord);if(hlC)hlDraw(curHL);SRC.borders='R';
+ }catch(e){SRC.borders='X'}
+ apply();srcPanel();
+}
+/* ---------- agentes simulados ---------- */
+let flights=[],planes,arcs,traffic,tv=[],ships=[],shipP,cur=[],curP,nodes,storms=[];
+function buildAgents(){
+ const NF=40,seg=40,ap=[];
+ for(let i=0;i<NF;i++){let a=CITY[Math.random()*CITY.length|0],b=CITY[Math.random()*CITY.length|0];if(a===b){i--;continue}
+  const A=ll(a[1],a[2]),B=ll(b[1],b[2]),om=Math.acos(clamp(A.dot(B),-1,1));if(om<.25){i--;continue}
+  flights.push({A,B,om,t:Math.random(),v:.05/om});
+  for(let s=0;s<seg;s++){const f=t=>{const w=(Math.sin((1-t)*om)/Math.sin(om)),u=Math.sin(t*om)/Math.sin(om);return A.clone().multiplyScalar(w).addScaledVector(B,u).multiplyScalar(1+.03*Math.sin(Math.PI*t))};const p0=f(s/seg),p1=f((s+1)/seg);ap.push(p0.x,p0.y,p0.z,p1.x,p1.y,p1.z)}}
+ const ag=new THREE.BufferGeometry();ag.setAttribute('position',new THREE.BufferAttribute(new Float32Array(ap),3));
+ arcs=new THREE.LineSegments(ag,new THREE.LineBasicMaterial({color:0x35b6ff,transparent:true,opacity:.25,blending:THREE.AdditiveBlending,depthWrite:false}));
+ const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NF*3),3));
+ planes=new THREE.Points(pg,new THREE.PointsMaterial({size:.022,map:dot,color:0xffffff,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+ const fl=new THREE.Group();fl.add(arcs,planes);G.flights=fl;scene.add(fl);
+ /* tráfego urbano */
+ const NV=16,tp=new Float32Array(CITY.length*NV*3);CITY.forEach((c,i)=>{for(let k=0;k<NV;k++)tv.push({c,ph:Math.random()*6.28,a:.6+Math.random(),b:.5+Math.random(),r:.15+Math.random()*.35})});
+ const tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.BufferAttribute(tp,3));
+ traffic=new THREE.Points(tg,new THREE.PointsMaterial({size:.008,map:dot,color:0xffc45a,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+ const np=[];CITY.forEach(c=>{const v=ll(c[1],c[2],1.002);np.push(v.x,v.y,v.z)});const ng=new THREE.BufferGeometry();ng.setAttribute('position',new THREE.BufferAttribute(new Float32Array(np),3));
+ nodes=new THREE.Points(ng,new THREE.PointsMaterial({size:.05,map:dot,color:0xffb347,transparent:true,opacity:.8,depthWrite:false,blending:THREE.AdditiveBlending}));
+ const tr=new THREE.Group();tr.add(traffic,nodes);G.traffic=tr;scene.add(tr);
+ /* navios */
+ const NS=70;for(let i=0;i<NS;i++){let la,lo,k=0;do{la=Math.random()*140-70;lo=Math.random()*360-180}while(!water(la,lo)&&k++<60);ships.push({la,lo,h:Math.random()*6.28,s:.5+Math.random()*.8})}
+ const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NS*3),3));
+ G.ships=new THREE.Points(sg,new THREE.PointsMaterial({size:.014,map:dot,color:0xffffff,transparent:true,depthWrite:false}));shipP=sg;scene.add(G.ships);
+ /* correntes */
+ const NC=1800;for(let i=0;i<NC;i++)cur.push({la:0,lo:0,age:99});
+ const cg=new THREE.BufferGeometry();cg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NC*3),3));
+ G.currents=new THREE.Points(cg,new THREE.PointsMaterial({size:.007,map:dot,color:0x3fd0ff,transparent:true,opacity:.8,depthWrite:false,blending:THREE.AdditiveBlending}));curP=cg;scene.add(G.currents);
+}
+function buildStorms(){const t=stormTex();G.storms=new THREE.Group();
+ [[18,-60,1],[15,135,1],[-14,80,-1]].forEach(([la,lo,sg])=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(.22,.22),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,side:THREE.DoubleSide}));
+ m.position.copy(ll(la,lo,1.016));m.lookAt(m.position.clone().multiplyScalar(2));m.userData.sg=sg;storms.push(m);G.storms.add(m)});scene.add(G.storms)}
+/* ---------- rótulos ---------- */
+const LB=[];
+function buildLabels(){const box=$('#labels');
+ const add=(t,txt,la,lo,cls,fn)=>{const e=document.createElement('div');e.className='lb '+cls;e.textContent=txt;if(fn)e.onclick=fn;box.appendChild(e);LB.push({e,p:ll(la,lo,1.02),t,cap:cls.includes('cap')})};
+ CONT.forEach(c=>add('cont',c[0],c[1],c[2],'cont'));
+ CTRY.forEach(c=>add('ctry',c[0],c[1],c[2],'ctry',()=>flyTo(c[1],c[2],2.1)));
+ CITY.forEach(c=>add('city',c[0],c[1],c[2],'city'+(c[4]?' cap':''),()=>flyTo(c[1],c[2],1.25)))}
+/* ---------- modos e camadas ---------- */
+const LN={clouds:'Nuvens (procedural)',atm:'Atmosfera',borders:'Fronteiras',labels:'Rótulos',flights:'Rotas aéreas (sim.)',traffic:'Cidades e tráfego (sim.)',ships:'Embarcações (sim.)',storms:'Tempestades (sim.)',temp:'Temperatura (sim.)',currents:'Correntes (sim.)',grid:'Grade lat/lon'};
+const L={};Object.keys(LN).forEach(k=>L[k]=0);
+const MODES=[["Realista",{clouds:1,atm:1,traffic:1,ships:1},0],["Noturno",{atm:1,traffic:1,ships:1,flights:1},2],["Climático",{clouds:1,atm:1,storms:1,temp:1},0],["Geográfico",{atm:1,borders:1,labels:1},0],["Oceânico",{atm:1,currents:1,ships:1},0],["Topográfico",{atm:1,borders:1},1],["Tecnológico",{atm:1,borders:1,flights:1,traffic:1,ships:1},2],["Espacial",{clouds:1,atm:1},0],["Científico",{clouds:1,atm:1,borders:1,labels:1,temp:1,grid:1,storms:1,currents:1},0]];
+let mode=0,autoRot=true;
+function setMode(i){mode=i;const m=MODES[i];Object.keys(L).forEach(k=>L[k]=m[1][k]||0);uni.mode.value=m[2];
+ if(i===7&&!window.CINE){autoRot=true;tgt.dist=7.5;$('#bauto').classList.add('on')}
+ document.querySelectorAll('#modes button').forEach((b,j)=>b.classList.toggle('on',j===i));syncChecks();apply()}
+function apply(){if(!earth)return;
+ cloudM.visible=!!L.clouds;if(cloudM2)cloudM2.visible=!!L.clouds;atm.visible=!!L.atm;tempM.visible=!!L.temp;if(bord)bord.visible=!!L.borders;
+ $('#labels').style.display=L.labels&&mode!==7?'block':'none';
+ G.flights.visible=!!L.flights;G.traffic.visible=!!L.traffic;G.ships.visible=!!L.ships;G.storms.visible=!!L.storms;G.currents.visible=!!L.currents;uni.grid.value=L.grid?1:0;
+ G.moon.visible=G.orbit.visible=(mode===7||camState.dist>4)&&!INF.visible}
+function syncChecks(){document.querySelectorAll('#layers input').forEach(c=>c.checked=!!L[c.dataset.k])}
+$('#modes').innerHTML=MODES.map((m,i)=>`<button data-i="${i}">${m[0]}</button>`).join('');
+$('#layers').innerHTML=Object.keys(LN).map(k=>`<label><input type="checkbox" data-k="${k}">${LN[k]}</label>`).join('');
+$('#modes').onclick=e=>{const b=e.target.closest('button');if(b&&earth)setMode(+b.dataset.i)};
+$('#layers').onchange=e=>{L[e.target.dataset.k]=e.target.checked?1:0;apply()};
+$('#sel').innerHTML='<option value="">Ir para…</option>'+CTRY.map((c,i)=>`<option value="c${i}">País: ${c[0]}</option>`).join('')+CITY.map((c,i)=>`<option value="t${i}">Cidade: ${c[0]}</option>`).join('');
+$('#sel').onchange=e=>{const v=e.target.value;if(!v)return;const x=v[0]==='c'?CTRY[+v.slice(1)]:CITY[+v.slice(1)];v[0]==='c'?flyTo(x[1],x[2],2.1):flyTo(x[1],x[2],1.25)};
+$('#go').onclick=()=>{const a=parseFloat($('#la').value),b=parseFloat($('#lo').value);if(isFinite(a)&&isFinite(b))flyTo(clamp(a,-85,85),wr(b),1.3)};
+$('#home').onclick=()=>{flyTo(20,camState.lon,4.2)};
+$('#fs').onclick=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})};
+$('#bauto').onclick=e=>{autoRot=!autoRot;e.target.classList.toggle('on',autoRot)};
+let sunLock=0;$('#bsun').onclick=e=>{sunLock=(sunLock+1)%3;e.target.textContent='Sol: '+['auto','dia','noite'][sunLock]};
+let speed=1;$('#sp').oninput=e=>{speed=Math.round(Math.pow(10,+e.target.value)*10)/10;$('#spv').textContent=speed+'×'};
+/* ---------- câmera ---------- */
+const camState={lat:20,lon:20,dist:4.2},tgt={lat:20,lon:20,dist:4.2};
+function flyTo(la,lo,d){tgt.lat=clamp(la,-85,85);tgt.lon=camState.lon+wr(lo-camState.lon);tgt.dist=d}
+const cv=R.domElement,ptr=new Map();let moved=0,pinch=0;
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,e);moved=0;if(ptr.size===2){const [a,b]=[...ptr.values()];pinch=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}});
+cv.addEventListener('pointermove',e=>{const p=ptr.get(e.pointerId);mouse.x=e.clientX;mouse.y=e.clientY;mouse.dirty=true;if(!p)return;
+ if(ptr.size===2){ptr.set(e.pointerId,e);const [a,b]=[...ptr.values()],d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);tgt.dist=clamp(tgt.dist*pinch/d,1.04,14);pinch=d;moved=99;return}
+ const dx=e.clientX-p.clientX,dy=e.clientY-p.clientY;moved+=Math.abs(dx)+Math.abs(dy);const k=.09*(camState.dist-.9)+.01;
+ tgt.lon-=dx*k;tgt.lat=clamp(tgt.lat+dy*k,-85,85);camState.lon=tgt.lon;camState.lat=tgt.lat;ptr.set(e.pointerId,e)});
+cv.addEventListener('pointerup',e=>{ptr.delete(e.pointerId);if(moved<5&&ptr.size===0)pick(e.clientX,e.clientY)});
+cv.addEventListener('pointercancel',e=>ptr.delete(e.pointerId));
+cv.addEventListener('wheel',e=>{e.preventDefault();tgt.dist=clamp(tgt.dist*Math.exp(e.deltaY*.0012),1.04,14)},{passive:false});
+const ray=new THREE.Raycaster(),mouse={x:0,y:0,dirty:false};let hover=null,sel=null;
+function hit(x,y){ray.setFromCamera(new THREE.Vector2(x/innerWidth*2-1,-(y/innerHeight)*2+1),camera);const h=ray.intersectObject(earth)[0];return h?toLL(h.point):null}
+const angd=(a,b,c,d)=>Math.acos(clamp(ll(a,b).dot(ll(c,d)),-1,1))/D;
+function nearest(p){let best=null,bd=1e9;CITY.forEach(c=>{const d=angd(p.lat,p.lon,c[1],c[2]);if(d<bd){bd=d;best={n:c[0],c:c[3],city:1,d}}});
+ let cb=null,cd=1e9;CTRY.forEach(c=>{const d=angd(p.lat,p.lon,c[1],c[2]);if(d<cd){cd=d;cb=c}});
+ return{city:bd<(camState.dist<1.6?2.5:1.2)*camState.dist/1.3?best:null,country:cb&&cd<25?cb[0]:'—'}}
+function pick(x,y){const p=hit(x,y);if(!p)return;const nr=nearest(p);sel={...p,...nr};
+ if(nr.city)flyTo(CITY.find(c=>c[0]===nr.city.n)[1],CITY.find(c=>c[0]===nr.city.n)[2],1.25);else flyTo(p.lat,p.lon,Math.max(1.5,camState.dist*.55))}
+/* ---------- simulação ---------- */
+let simT=Date.now(),sunDir=new THREE.Vector3(1,0,0),decl=0;
+function sunUpdate(){const d=new Date(simT),h=d.getUTCHours()+d.getUTCMinutes()/60+d.getUTCSeconds()/3600,doy=(simT-Date.UTC(d.getUTCFullYear(),0,0))/864e5;
+ decl=23.44*Math.sin(2*Math.PI*(doy-80)/365.25);
+ if(sunLock===0)sunDir.copy(ll(decl,-(h-12)*15));else if(sunLock===1)sunDir.copy(ll(clamp(camState.lat*.5+decl*.3,-60,60),camState.lon+25));else sunDir.copy(ll(-camState.lat*.3,camState.lon+155));
+ uni.sun.value.copy(sunDir);sunL.position.copy(sunDir).multiplyScalar(20);sunSpr.position.copy(sunDir).multiplyScalar(90)}
+const tempAt=(la,lo)=>Math.round(30-46*Math.pow(Math.abs(Math.sin((la-decl*.5)*D*.98)),1.3)+(FB(lo*.04,la*.04,3,3)-.47)*14);
+const LVN=['Planeta inteiro','Continentes','Países','Estados e regiões','Cidades','Metrópoles e bairros','Áreas urbanas'];
+const level=d=>d>6?1:d>3.4?2:d>2.2?3:d>1.7?4:d>1.35?5:d>1.15?6:7;
+function srcPanel(){const t=SRC.tex==='R'?['R','REAL · imagem de satélite']:['P','PROCEDURAL · fallback'];const b=SRC.borders==='R'?['R','REAL · Natural Earth 110m']:['X','indisponível (offline)'];
+ $('#src').innerHTML=`<h4>FONTES DE DADOS</h4><div>Superfície<span class="${t[0]}">${t[1]}</span></div><div>Fronteiras<span class="${b[0]}">${b[1]}</span></div><div>Cidades/países<span class="R">REAL · lista curada</span></div><div>Nuvens<span class="P">PROCEDURAL</span></div><div>Clima, tráfego, voos, navios, correntes<span class="S">SIMULADO</span></div><div>Estados, ruas, bairros<span class="X">sem dados locais</span></div>`}
+function infoPanel(){const p=sel||hover||{lat:camState.lat,lon:camState.lon,...nearest({lat:camState.lat,lon:camState.lon})},lv=level(camState.dist),el=Math.asin(clamp(ll(p.lat,p.lon).dot(sunDir),-1,1))/D;
+ const pres=Math.round(1013+(FB(p.lon*.03,p.lat*.03,7,3)-.47)*40),hum=Math.round(clamp(40+60*FB(p.lat*.05,p.lon*.05,9,3)*Math.cos(p.lat*D),5,99));
+ $('#info').innerHTML=`<span class="n">${p.city?p.city.n:'Região selecionada'}</span><div>País<span>${p.city?p.city.c:p.country}</span></div><div>Coordenadas<span>${p.lat.toFixed(2)}°, ${p.lon.toFixed(2)}°</span></div><div>Sol (elevação)<span>${el.toFixed(0)}° ${el>0?'dia':el>-6?'crepúsculo':'noite'}</span></div><div>Temperatura <span class="S">sim.</span><span>${tempAt(p.lat,p.lon)} °C</span></div><div>Pressão <span class="S">sim.</span><span>${pres} hPa</span></div><div>Umidade <span class="S">sim.</span><span>${hum}%</span></div><div>Zoom<span>Nível ${lv} · ${LVN[lv-1]}</span></div>${lv>=4?'<div style="opacity:.7;font-size:10px;display:block;margin-top:4px">Estados, ruas e bairros exigem fonte cartográfica externa (ex.: tiles OSM); não há dados locais.</div>':''}`}
+/* ---------- loop ---------- */
+const tmpA=new THREE.Vector3(),sv=new THREE.Vector3();let last=performance.now(),fr=0,facc=0,fN=0,t3=0;
+function loop(now){requestAnimationFrame(loop);const dt=Math.min(.1,(now-last)/1000);last=now;if(!earth)return;
+ if(CS)director(PAUSED?0:dt);if(!PAUSED)simT+=dt*1000*speed;const k=1-Math.exp(-dt*4);
+ if(autoRot&&!ptr.size)tgt.lon-=dt*(mode===7?4:3);
+ camState.lat+=(tgt.lat-camState.lat)*k;camState.lon+=(tgt.lon-camState.lon)*k;camState.dist+=(tgt.dist-camState.dist)*k;
+ camera.position.copy(ll(camState.lat,camState.lon,camState.dist));camera.up.set(0,1,0);camera.lookAt(0,0,0);if(SW>.001||INF.visible){const Rv=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion),off=Rv.clone().multiplyScalar(-LC*SW);camera.position.add(off);camera.lookAt(off);{const Rx=Rv.clone(),Up=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion),Qs=new THREE.Quaternion().setFromAxisAngle(Up,now*.0004).multiply(new THREE.Quaternion().setFromAxisAngle(Rx,now*.00027));INF.position.copy(Rv.multiplyScalar(-LC)).applyQuaternion(Qs);INF.quaternion.copy(Qs).multiply(camera.quaternion);word.position.copy(Rx).multiplyScalar(-LC).addScaledVector(Up,-2.95);word.quaternion.copy(camera.quaternion);if(INF.visible)infUpdate(now)}}
+ sunUpdate();cloudM.rotation.y+=dt*.004*Math.max(1,speed*.2);cloudM2.rotation.y-=dt*.003;
+ const ma=simT/864e5/27.32*6.2832;G.moon.position.set(8*Math.cos(ma),8*Math.sin(ma)*.09,8*Math.sin(ma));G.moon.rotation.y=-ma;
+ G.moon.visible=G.orbit.visible=(mode===7||camState.dist>4)&&!INF.visible;
+ const ts=simT/1000;
+ if(G.flights.visible){const a=planes.geometry.attributes.position;flights.forEach((f,i)=>{f.t+=dt*f.v*Math.min(speed,60);if(f.t>1)f.t=0;const w=Math.sin((1-f.t)*f.om)/Math.sin(f.om),u=Math.sin(f.t*f.om)/Math.sin(f.om);tmpA.copy(f.A).multiplyScalar(w).addScaledVector(f.B,u).multiplyScalar(1+.03*Math.sin(Math.PI*f.t));a.setXYZ(i,tmpA.x,tmpA.y,tmpA.z)});a.needsUpdate=true}
+ if(G.traffic.visible){const a=traffic.geometry.attributes.position;tv.forEach((v,i)=>{const t=ts*.02*Math.min(speed,200)+performance.now()/1000;const la=v.c[1]+v.r*Math.sin(t*v.a+v.ph),lo=v.c[2]+v.r*Math.cos(t*v.b+v.ph)/Math.max(.2,Math.cos(v.c[1]*D));sv.copy(ll(la,lo,1.002));a.setXYZ(i,sv.x,sv.y,sv.z)});a.needsUpdate=true}
+ if(G.ships.visible){const a=shipP.attributes.position;ships.forEach((s,i)=>{const sp=s.s*dt*3;s.la+=Math.cos(s.h)*sp;s.lo+=Math.sin(s.h)*sp/Math.max(.2,Math.cos(s.la*D));if(Math.abs(s.la)>75||!water(s.la,wr(s.lo))){s.la-=Math.cos(s.h)*sp*2;s.lo-=Math.sin(s.h)*sp*2/Math.max(.2,Math.cos(s.la*D));s.h+=1.5+Math.random()*2}else s.h+=(Math.random()-.5)*dt*.6;s.lo=wr(s.lo);sv.copy(ll(s.la,s.lo,1.0012));a.setXYZ(i,sv.x,sv.y,sv.z)});a.needsUpdate=true}
+ if(G.currents.visible){const a=curP.attributes.position;cur.forEach((c,i)=>{c.age+=dt;if(c.age>7||!water(c.la,c.lo)){let q=0;do{c.la=Math.random()*150-75;c.lo=Math.random()*360-180}while(!water(c.la,c.lo)&&q++<30);c.age=Math.random()*3}
+  c.lo=wr(c.lo+Math.cos(c.la*D*4)*2.5*dt);c.la=clamp(c.la+Math.sin(c.lo*D*2.3)*1.6*dt,-80,80);sv.copy(ll(c.la,c.lo,1.003));a.setXYZ(i,sv.x,sv.y,sv.z)});a.needsUpdate=true}
+ if(G.storms.visible)storms.forEach(m=>m.rotateZ(dt*.5*m.userData.sg));
+ if(G.traffic.visible)nodes.material.opacity=.55+.25*Math.sin(now*.003);
+ /* rótulos */
+ if(L.labels&&mode!==7){const cd=camera.position.clone().normalize(),dd=camState.dist,w=innerWidth,h=innerHeight;LB.forEach(l=>{let show=l.t==='cont'?dd>3.2:l.t==='ctry'?dd<5.5&&dd>1.7:(dd<3.6||(l.cap&&dd<5));if(show){const f=l.p.clone().normalize().dot(cd);if(f<.25)show=false;else{sv.copy(l.p).project(camera);l.e.style.left=(sv.x*.5+.5)*w+'px';l.e.style.top=(-sv.y*.5+.5)*h+'px';l.e.style.opacity=clamp((f-.25)*4,0,1)}}l.e.style.display=show?'block':'none'})}
+ /* HUD */
+ fr++;facc+=dt;t3+=dt;if(facc>=1){const f=fr/facc;$('#fps').textContent=Math.round(f)+' FPS';if(f<40&&pr>1){pr=Math.max(1,pr-.25);R.setPixelRatio(pr)}else if(f>58&&pr<Math.min(devicePixelRatio||1,innerWidth<800?1.5:2.5)){pr+=.25;R.setPixelRatio(pr)}fr=0;facc=0}
+ if(mouse.dirty){mouse.dirty=false;hover=hit(mouse.x,mouse.y);if(hover){hover={...hover,...nearest(hover)};$('#cur').textContent=`LAT ${hover.lat.toFixed(2)}° LON ${hover.lon.toFixed(2)}°`}}
+ if(t3>.3){t3=0;const d=new Date(simT);$('#utc').textContent='UTC '+d.toISOString().slice(11,19);$('#dt').textContent=d.toISOString().slice(0,10)+(speed!==1?' · '+speed+'×':'');$('#lvl').textContent='Nível '+level(camState.dist)+' · '+LVN[level(camState.dist)-1];infoPanel()}
+ R.render(scene,camera)}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();R.setSize(innerWidth,innerHeight)});
+R.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();fail('Contexto WebGL perdido. Recarregue a página.')});
+window.CINE=1;cv.style.pointerEvents='none';
+
+/* ---- símbolo do infinito 3D + VECORION ---- */
+const LC=2.4,AI=4.2;let SW=0;
+const INF=new THREE.Group();INF.visible=false;scene.add(INF);
+const cpts=[];for(let i=0;i<400;i++){const t=i/400*6.2832,dn=1+Math.sin(t)*Math.sin(t);cpts.push(new THREE.Vector3(AI*Math.cos(t)/dn,AI*Math.sin(t)*Math.cos(t)/dn,0))}
+const curve=new THREE.CatmullRomCurve3(cpts,true),add=THREE.AdditiveBlending;
+const t1=new THREE.Mesh(new THREE.TubeGeometry(curve,400,.06,8,true),new THREE.MeshBasicMaterial({color:0xaee9ff,transparent:true,blending:add,depthWrite:false}));
+const t2=new THREE.Mesh(new THREE.TubeGeometry(curve,200,.2,8,true),new THREE.MeshBasicMaterial({color:0x2a9dff,transparent:true,opacity:.2,blending:add,depthWrite:false}));
+const NCM=3,TRL=24,cg2=new THREE.BufferGeometry();cg2.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NCM*TRL*3),3));
+const cm=new THREE.Points(cg2,new THREE.PointsMaterial({size:.3,map:dot,color:0xffffff,transparent:true,blending:add,depthWrite:false}));
+const tc=mkc(1400,300),tx=tc.getContext('2d');tx.font='700 200px "Segoe UI",system-ui,sans-serif';tx.textBaseline='middle';
+const WORD=[...'VECORION'],WW=WORD.map(c=>tx.measureText(c).width),SPC=34,x0=(1400-(WW.reduce((a,b)=>a+b,0)+SPC*7))/2,gr=tx.createLinearGradient(0,0,0,300);gr.addColorStop(0,'#fff');gr.addColorStop(1,'#7fdcff');
+tx.fillStyle=gr;tx.shadowColor='#2aa8ff';tx.shadowBlur=34;for(let k=0;k<2;k++){let xx=x0;WORD.forEach((c,i)=>{tx.fillText(c,xx,150);xx+=WW[i]+SPC})}
+const word=new THREE.Mesh(new THREE.PlaneGeometry(8.8,8.8*300/1400),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(tc),transparent:true,depthWrite:false}));word.position.set(0,-2.95,0);
+cm.frustumCulled=false;INF.add(t2,t1,cm);scene.add(word);
+function setInf(op){INF.visible=op>.01;word.visible=INF.visible;t1.material.opacity=op;t2.material.opacity=.2*op;word.material.opacity=op;cm.material.opacity=op}
+function infUpdate(now){const a=cg2.attributes.position;let n=0;for(let k=0;k<NCM;k++){const h=(now*.00005+k/NCM)%1;for(let j=0;j<TRL;j++){const p=curve.getPointAt(((h-j*.0035)%1+1)%1);a.setXYZ(n++,p.x,p.y,p.z)}}a.needsUpdate=true}
+const D0=()=>clamp(10.8/(camera.aspect*.828),10,34);
+/* roteiro: [dur,título,legenda,modo,sol,vel,lat0,lon0,dist0,lat1,lon1,dist1,rel,{sym,nfi,nfo,nocap}]  (dist -1 = enquadrar o símbolo) */
+const SC=[
+[22, "", "", 0, 1, 60, 12, -78, -1, 12, -62, -1, 0, {"sym": 1, "nfo": 1, "nocap": 1}, "Vecorion apresenta. Um símbolo sem começo e sem fim, e dentro dele, o único mundo que conhecemos."],
+[22, "EARTH INFINITY", "Um planeta vivo", 0, 1, 60, 12, -62, -1, 15, -25, 4.2, 0, {"sym": 1, "nfi": 1}, "Bem-vindo ao Earth Infinity. Uma viagem completa pelo planeta Terra, desenhada inteiramente por código. Vamos sair da órbita e descer, camada por camada, até o coração das cidades."],
+[26, "Dia e noite", "A sombra percorre o planeta a cada 24 horas", 0, 0, 2500, 10, -30, 4.2, 25, 40, 3.4, 0, {}, "A Terra gira uma vez a cada vinte e quatro horas. Enquanto uma metade do mundo desperta sob o sol, a outra adormece na sombra. E a linha entre as duas nunca para de caminhar pela superfície do planeta."],
+[24, "A Lua", "Órbita lunar (fora de escala)", 7, 1, 40000, 6, 10, 10, 6, -30, 7.2, 0, {}, "Ao nosso lado, a Lua completa uma volta ao redor da Terra a cada vinte e sete dias. Aqui ela aparece fora de escala, só para admirarmos essa companheira silenciosa, que move as marés e inspira a humanidade desde sempre."],
+[26, "Amanhecer", "A luz atravessa a atmosfera", 0, 0, 300, 15, 95, 2.6, 5, 100, 1.7, 1, {}, "No limite entre a noite e o dia, a luz do sol atravessa a atmosfera e pinta o horizonte de azul e laranja. Essa camada finíssima de ar é o que protege e sustenta toda a vida que conhecemos."],
+[26, "Clima", "Ciclones e temperatura (simulação)", 2, 1, 2000, 18, -40, 3.4, 18, -62, 1.5, 0, {}, "Nuvens e ciclones desenham o clima do planeta. Atenção: os furacões e as temperaturas que aparecem nesta cena são uma simulação visual, e não medições em tempo real."],
+[24, "Oceanos", "Correntes e embarcações (simulação)", 4, 1, 60, -15, -35, 3.5, -5, -10, 2, 0, {}, "Mais de setenta por cento da superfície da Terra é coberta por oceanos. Correntes levam calor e vida de um canto a outro do mundo, e navios cruzam essas rotas. As correntes e as embarcações desta cena também são simuladas."],
+[15, "América do Sul", "Formato real do continente", 3, 1, 1, -15, -80, 3.4, -15, -55, 2.5, 0, {"hk": ["South America"]}, "Agora, os continentes. Começamos pela América do Sul, de selvas a geleiras. Em destaque, o formato real do continente, traçado a partir de dados cartográficos."],
+[15, "África", "Formato real do continente", 3, 1, 1, 5, -10, 3.4, 3, 20, 2.5, 0, {"hk": ["Africa"]}, "A África, o segundo maior continente do mundo, atravessada pela linha do Equador e considerada o berço da espécie humana."],
+[15, "Europa", "Formato real do continente", 3, 1, 1, 45, -30, 3.2, 50, 15, 2.3, 0, {"hk": ["Europe"]}, "A Europa: pequena em área, mas gigante em diversidade de culturas, línguas e fronteiras."],
+[15, "Ásia", "Formato real do continente", 3, 1, 1, 25, 40, 3.6, 35, 90, 2.8, 0, {"hk": ["Asia"]}, "A Ásia, o maior de todos os continentes, onde vive mais da metade da população do planeta."],
+[15, "Oceania", "Formato real do continente", 3, 1, 1, -10, 100, 3.4, -25, 140, 2.5, 0, {"hk": ["Oceania"]}, "A Oceania: a Austrália e milhares de ilhas espalhadas pelo oceano Pacífico."],
+[15, "Antártida", "Formato real do continente", 3, 1, 1, -45, 0, 3.5, -75, 10, 2.4, 0, {"hk": ["Antarctica"]}, "E a Antártida, o continente mais frio, mais seco e mais alto da Terra, coberto de gelo e sem população permanente."],
+[15, "América do Norte", "Formato real do continente", 3, 1, 1, 30, -130, 3.4, 45, -100, 2.6, 0, {"hk": ["North America"]}, "Do outro lado, a América do Norte, dos desertos do México às florestas e lagos do Canadá."],
+[22, "Relevo", "Himalaia e Nepal", 5, 1, 1, 20, 70, 3, 28, 87, 1.45, 0, {"hc": ["Nepal"]}, "Agora, o relevo. No mapa topográfico, as montanhas ganham vida. Aqui, o Himalaia, onde se erguem os picos mais altos do mundo. Em destaque, o Nepal."],
+[18, "Relevo", "Cordilheira dos Andes e Chile", 5, 1, 1, -5, -60, 3, -18, -69, 1.5, 0, {"hc": ["Chile"]}, "Do outro lado do globo, os Andes percorrem toda a borda oeste da América do Sul. É a cordilheira continental mais longa do planeta."],
+[20, "Floresta Amazônica", "Brasil", 0, 1, 1, 5, -85, 3, -3.5, -60, 1.4, 0, {"hc": ["Brazil"]}, "A Floresta Amazônica abriga uma das maiores biodiversidades do planeta e ajuda a regular o clima de toda a Terra. Em destaque, o Brasil."],
+[20, "Deserto do Saara", "Vale do Nilo e Egito", 0, 1, 1, 20, 0, 3, 27, 22, 1.4, 0, {"hc": ["Egypt"]}, "No norte da África, o Saara se estende por milhares de quilômetros. E uma faixa verde corta o deserto: o vale do rio Nilo, berço de uma das primeiras grandes civilizações. Em destaque, o Egito."],
+[20, "Regiões polares", "Groenlândia", 0, 1, 1, 50, -20, 3, 80, -20, 1.9, 0, {"hc": ["Greenland"]}, "Nos extremos do planeta, o gelo reflete a luz do sol e ajuda a manter o equilíbrio do clima. Aqui, a Groenlândia, no Ártico."],
+[24, "Geografia", "Europa, França e Paris", 3, 1, 1, 40, -20, 3.4, 48.86, 2.35, 1.25, 0, {"hc": ["France"]}, "Chegamos aos países. Cada fronteira conta uma história. Aproximando, encontramos Paris, na França, uma das cidades mais visitadas do mundo."],
+[20, "Nova York", "Estados Unidos", 3, 1, 1, 35, -100, 3, 40.7, -74, 1.2, 0, {"hc": ["United States of America"]}, "Nova York, nos Estados Unidos. Arranha-céus, avenidas e milhões de pessoas em movimento, numa das maiores metrópoles do planeta."],
+[20, "São Paulo", "Brasil", 3, 1, 1, -15, -70, 3, -23.55, -46.63, 1.2, 0, {"hc": ["Brazil"]}, "São Paulo, no Brasil: a maior cidade da América do Sul. Ruas, pontes e avenidas formam um organismo vivo, que nunca dorme."],
+[20, "Tóquio", "Japão", 3, 1, 1, 30, 110, 3, 35.68, 139.69, 1.2, 0, {"hc": ["Japan"]}, "Tóquio, no Japão, a região metropolitana mais populosa do mundo, onde tradição e tecnologia caminham lado a lado."],
+[26, "Cidades à noite", "As luzes da superfície", 1, 2, 1, 20, 0, 3.2, 20, 60, 2.6, 0, {}, "Quando a noite cai, as cidades se acendem. As luzes revelam onde as pessoas vivem e desenham, no escuro, o mapa da humanidade."],
+[28, "Rede global", "Rotas aéreas e tráfego (simulação)", 6, 2, 1, 30, -80, 3.5, 30, 60, 3.2, 0, {}, "Sobre essas luzes, uma rede invisível conecta o mundo: aviões, navios e veículos em movimento constante. Nesta cena, todo esse tráfego é simulado, para representar a atividade global."],
+[20, "Dubai", "Emirados Árabes", 6, 2, 1, 20, 40, 3, 25.2, 55.27, 1.2, 0, {"hc": ["United Arab Emirates"]}, "Dubai, nos Emirados Árabes: uma cidade erguida no deserto, hoje um dos maiores pontos de conexão aérea do planeta."],
+[18, "Sydney", "Austrália", 3, 1, 1, -20, 130, 3, -33.87, 151.21, 1.2, 0, {"hc": ["Australia"]}, "Sydney, na Austrália, entre o oceano e uma das baías mais famosas do hemisfério sul."],
+[24, "Modo científico", "Camadas e grade geográfica", 8, 1, 1, 20, -30, 4, 0, 40, 2.6, 0, {}, "No modo científico, a grade de latitude e longitude mostra como localizamos qualquer ponto da Terra. Cada linha é uma coordenada, e cada coordenada, um lugar."],
+[38, "", "", 0, 0, 600, 20, 40, 2.5, 15, -10, -1, 0, {"sym": 1, "nocap": 1}, "Um único planeta. Bilhões de histórias. E possibilidades infinitas. Vecorion."]];
+let si=0,st=0,CS=null;const fadeEl=$('#fade'),capEl=$('#cap');
+function startScene(i){si=i%SC.length;st=0;CS=SC[si];setMode(CS[3]);sunLock=CS[4];speed=CS[5];$('#ct').textContent=CS[1];$('#cs').textContent=CS[2];if(!hlC&&earth)initHL();hlDraw(CS[13]||{});$('#sub').textContent=CS[14]||''}
+function director(dt){st+=dt;const o=CS[13]||{},dur=CS[0],u=clamp(st/dur,0,1),e=.3*u+.7*u*u*(3-2*u),m=(a,b)=>a+(b-a)*e,Dn=D0(),d0=CS[8]<0?Dn:CS[8],d1=CS[11]<0?Dn:CS[11];
+ const lat=m(CS[6],CS[9]);let lon=m(CS[7],CS[10]);const d=m(d0,d1);if(CS[12])lon+=toLL(sunDir).lon;
+ tgt.lat=camState.lat=lat;tgt.lon=camState.lon=lon;tgt.dist=camState.dist=d;
+ SW=o.sym?clamp((d-3)/(Dn-3),0,1):0;setInf(o.sym?clamp((d-5.5)/3,0,1):0);
+ const fi=o.nfi?0:1.2,fo=o.nfo?0:1;fadeEl.style.opacity=PAUSED?0:Math.max(st<fi?1-st/fi:0,st>dur-fo?(st-(dur-fo))/fo:0);
+ capEl.classList.toggle('on',st>1.5&&st<dur-2&&!o.nocap);$('#sub').classList.toggle('on',CC&&st>1&&st<dur-.8&&!!CS[14]);if(uni)uni.uZ.value=clamp((2.2-d)/1,0,1);if(st>=dur)startScene(si+1);tlUpdate()}
+let PAUSED=false,dragTL=false,lastSec=-1;
+const TT=SC.reduce((a,c)=>a+c[0],0),STS=[];{let a=0;SC.forEach(c=>{STS.push(a);a+=c[0]})}
+const fmt=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
+function seek(t){t=clamp(t,0,TT-.05);let i=0;while(i+1<SC.length&&STS[i+1]<=t)i++;startScene(i);st=t-STS[i];director(0)}
+function tlUpdate(){const t=STS[si]+st;if(!dragTL)$('#tr').value=t/TT*1000;const sc=Math.floor(t);if(sc!==lastSec){lastSec=sc;$('#tt').textContent=fmt(t)+' / '+fmt(TT);$('#ts').value=si}}
+$('#ts').innerHTML=SC.map((c,i)=>`<option value="${i}">${i+1}. ${c[1]||(i?'Final':'Abertura')}</option>`).join('');
+$('#pp').onclick=()=>{PAUSED=!PAUSED;$('#pp').textContent=PAUSED?'▶':'⏸'};
+$('#pv').onclick=()=>seek(st>2?STS[si]:STS[Math.max(0,si-1)]);
+$('#nx').onclick=()=>seek(STS[(si+1)%SC.length]);
+$('#tr').oninput=e=>{dragTL=true;seek(e.target.value/1000*TT)};
+$('#tr').onchange=()=>{dragTL=false};
+$('#ts').onchange=e=>seek(STS[+e.target.value]);
+let GJ=null,hlC=null,hlM=null,hlTex=null,curHL={},CC=true;
+function initHL(){hlC=mkc(2048,1024);hlTex=new THREE.CanvasTexture(hlC);hlM=new THREE.Mesh(new THREE.SphereGeometry(1.004,96,48),new THREE.MeshBasicMaterial({map:hlTex,transparent:true,depthWrite:false}));hlM.visible=false;scene.add(hlM)}
+function hlDraw(o){curHL=o||{};if(!hlC)return;const x=hlC.getContext('2d');x.clearRect(0,0,2048,1024);const a=(curHL.hc||[]).map(v=>v.toLowerCase()),k=curHL.hk||[];let any=0;
+ if(GJ&&(a.length||k.length)){x.fillStyle='rgba(70,190,255,.24)';x.strokeStyle='rgba(170,240,255,.95)';x.lineWidth=2.2;
+  GJ.forEach(f=>{const p=f.properties||{},nm=[p.ADMIN,p.NAME].map(v=>(v||'').toLowerCase());if(!(nm.some(v=>a.includes(v))||k.includes(p.CONTINENT)))return;const g=f.geometry;
+   (g.type==='Polygon'?[g.coordinates]:g.coordinates).forEach(pl=>{x.beginPath();pl.forEach(r=>r.forEach((c,i)=>{const X=(c[0]+180)/360*2048,Y=(90-c[1])/180*1024;i?x.lineTo(X,Y):x.moveTo(X,Y)}));x.fill('evenodd');x.stroke();any=1})})}
+ hlTex.needsUpdate=true;hlM.visible=!!any}
+let tA=0;SC.forEach(r=>{r.t0=tA;tA+=r[0]});
+$('#ra').value=SC.map((r,i)=>'['+fmt(r.t0)+' – '+fmt(r.t0+r[0])+'] CENA '+(i+1)+' — '+(r[1]||(i?'Final':'Abertura'))+'\n'+r[14]).join('\n\n');
+$('#cc').onclick=e=>{CC=!CC;e.target.style.opacity=CC?1:.4};
+$('#rt').onclick=()=>$('#rot').classList.add('on');$('#rx').onclick=()=>$('#rot').classList.remove('on');
+$('#rc').onclick=()=>{const t=$('#ra');t.select();try{navigator.clipboard.writeText(t.value)}catch(e){document.execCommand('copy')}$('#rc').textContent='Copiado'; setTimeout(()=>$('#rc').textContent='Copiar',1500)};
+$('#tf').onclick=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})};
+build().then(()=>{setMode(0);srcPanel();autoRot=false;startScene(0);prog(100,'Pronto');const l=$('#load');l.style.opacity=0;setTimeout(()=>l.remove(),900);requestAnimationFrame(loop)}).catch(e=>fail(e.message||e));
+}
+</script></body></html>
