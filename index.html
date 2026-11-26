@@ -56,7 +56,11 @@ input[type=range]{width:100%}
 @media(max-width:600px){#ts{display:none}#tt{font-size:10px}}
 #sub{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(max(7vh,46px) + 8px);width:min(88vw,760px);text-align:center;z-index:11;font-size:clamp(12px,2.6vw,17px);line-height:1.4;color:#fff;text-shadow:0 0 6px #000,0 0 12px #000;background:rgba(0,0,0,.4);padding:6px 10px;border-radius:8px;opacity:0;transition:opacity .6s;pointer-events:none}
 #sub.on{opacity:1}
-#vo,#mx{opacity:.45}#sv,#fx{height:32px;white-space:nowrap}
+#mx{opacity:.45}#vo{opacity:1}#vs{display:none!important}
+#gate{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(ellipse at center,rgba(3,10,22,.55),rgba(0,0,0,.88));text-align:center;padding:20px}
+#gate.on{display:flex}#gate h1{margin:0;font-weight:200;letter-spacing:.5em;font-size:clamp(20px,5vw,40px);color:#fff;text-shadow:0 0 24px #2aa8ff}
+#gate small{letter-spacing:.2em;color:#9fdcff;font-size:clamp(10px,1.8vw,13px)}
+#gb{font-size:clamp(14px,2.4vw,18px);letter-spacing:.3em;padding:14px 34px;border-radius:40px;border:1px solid var(--c);background:#0b2238cc;color:#fff;box-shadow:0 0 28px #5fd4ff66;cursor:pointer}#gb:hover{background:#0d6d9b}#sv,#fx{height:32px;white-space:nowrap}
 #vig{position:fixed;inset:0;z-index:8;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.6) 100%)}
 #grain{position:fixed;inset:-60px;z-index:8;pointer-events:none;opacity:.075;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:gr .8s steps(1) infinite}
 @keyframes gr{0%{transform:translate(0,0)}17%{transform:translate(-22px,14px)}34%{transform:translate(18px,-26px)}51%{transform:translate(-30px,-10px)}68%{transform:translate(24px,22px)}85%{transform:translate(-8px,28px)}}
@@ -91,9 +95,9 @@ body.rec,body.rec *{cursor:none!important}body.rec #tl>*{visibility:hidden}body.
 @media(max-width:600px){#pv{display:none}#tl{gap:4px;padding:0 6px}}
 </style></head><body class="fx">
 <div id="load"><h1>EARTH INFINITY</h1><div id="bar"><i></i></div><div id="lt">Inicializando…</div></div>
-<div id="err"></div>
+<div id="err"></div><div id="gate"><h1>EARTH INFINITY</h1><small>UMA VIAGEM PELO PLANETA · USE FONES DE OUVIDO</small><button id="gb">▶ INICIAR</button></div>
 <div id="top"><b>EARTH INFINITY</b><span id="utc">UTC --:--:--</span><span id="dt">--</span><span id="cur">LAT -- LON --</span><span id="fps">-- FPS</span><span id="lvl">Nível 1</span></div>
-<div id="labels"></div><div id="vig"></div><div id="grain"></div><div id="card"><div></div><div></div><div></div></div><div id="cr"></div><div id="fact"></div><div id="qa"><small>VOCÊ SABIA?</small><div></div></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="sv" aria-label="Versão" title="Alterna entre a versão completa e a curta"></button><button id="fx" aria-label="Efeitos de cinema" title="Vinheta e granulação de filme">✨</button><button id="mx" aria-label="Trilha sonora" title="Trilha sonora e efeitos">🎵</button><input type="range" id="mv" min="0" max="1" step=".05" value=".7" aria-label="Volume da trilha"><button id="tp" aria-label="Teleprompter" title="Teleprompter para gravar a sua voz">📜</button><button id="vo" aria-label="Narração por voz" title="Narração por voz">🔊</button><select id="vs" aria-label="Voz"></select><button id="rec" aria-label="Gravar vídeo" title="Grava o filme completo com voz e baixa o vídeo">⏺ Gravar</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="tpv"><div id="tpm"></div><div id="tpt"></div><div id="tpb"><i></i></div></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
+<div id="labels"></div><div id="vig"></div><div id="grain"></div><div id="card"><div></div><div></div><div></div></div><div id="cr"></div><div id="fact"></div><div id="qa"><small>VOCÊ SABIA?</small><div></div></div><div id="fade"></div><div class="bar" style="top:0"></div><div class="bar" style="bottom:0"></div><div id="tl"><button id="pp" aria-label="Pausar">⏸</button><button id="pv" aria-label="Anterior">⏮</button><button id="nx" aria-label="Próxima">⏭</button><input type="range" id="tr" min="0" max="1000" step="1" value="0" aria-label="Linha do tempo"><span id="tt">0:00</span><select id="ts" aria-label="Cena"></select><button id="cc" aria-label="Legendas">CC</button><button id="sv" aria-label="Versão" title="Alterna entre a versão completa e a curta"></button><button id="fx" aria-label="Efeitos de cinema" title="Vinheta e granulação de filme">✨</button><button id="mx" aria-label="Trilha sonora" title="Trilha sonora e efeitos">🎵</button><input type="range" id="mv" min="0" max="1" step=".05" value=".7" aria-label="Volume da trilha"><button id="tp" aria-label="Teleprompter" title="Teleprompter para gravar a sua voz">📜</button><button id="vo" aria-label="Voz da narração" title="Liga/desliga a voz da narração">🔊</button><select id="vs" aria-label="Voz"></select><button id="rec" aria-label="Gravar vídeo" title="Grava o filme completo com voz e baixa o vídeo">⏺ Gravar</button><button id="rt" aria-label="Roteiro">☰</button><button id="tf" aria-label="Tela cheia">⛶</button></div><div id="sub"></div><div id="tpv"><div id="tpm"></div><div id="tpt"></div><div id="tpb"><i></i></div></div><div id="rot"><div class="rh"><b>Roteiro de narração</b><span><button id="rc">Copiar</button> <button id="rx">Fechar</button></span></div><textarea id="ra" readonly></textarea></div><div id="cap"><div id="ct"></div><div id="cs"></div></div>
 <div class="panel" id="side">
 <h4>MODOS</h4><div class="modes" id="modes"></div>
 <h4>CAMADAS</h4><div id="layers"></div>
@@ -413,17 +417,19 @@ const NARR={"1": "Vecorion apresenta. Antes de começar, fica à vontade, porque
 const QS={"3": ["Se a Terra gira tão rápido, por que a gente não sente?", "Mas então por que a gente não sente?"], "7": ["Quanto da Terra é coberto por água?", "Será que você sabe quanto da Terra é água?"], "12": ["A Austrália é país ou continente?", "Muita gente pergunta se a Austrália é país ou continente."], "17": ["A Amazônia é mesmo o pulmão do mundo?", "Dizem que ela é o pulmão do mundo"], "24": ["O que os vazios no mapa de luzes revelam?", "Repara nos vazios"]};
 const ENERGY={"1": 0, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 0, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2, "13": 2, "14": 2, "15": 2, "16": 2, "17": 1, "18": 1, "19": 0, "20": 2, "21": 3, "22": 3, "23": 3, "24": 1, "25": 3, "26": 3, "27": 2, "28": 1, "29": 1};
 SCF.forEach((r,n)=>{r[15]=FACTS[n+1]||null;r[14]=NARR[n+1]||r[14];r[16]=QS[n+1]||null;r[17]=ENERGY[n+1]||0});
+/* duração (s) de cada arquivo de voz em audio/cena-NN.mp3 */
+const VOZ={"1": 14.73, "2": 18.6, "3": 26.72, "4": 21.04, "5": 16.9, "6": 21.51, "7": 21.37, "8": 14.52, "9": 15.34, "10": 14.36, "11": 13.77, "12": 14.73, "13": 15.69, "14": 12.93, "15": 21.62, "16": 12.82, "17": 17.7, "18": 14.92, "19": 9.42, "20": 12.51, "21": 13.79, "22": 12.96, "23": 11.46, "24": 16.49, "25": 14.54, "26": 14.1, "27": 5.33, "28": 16.64, "29": 15.31};
 const SC_DROP=[6,16,19,26,27,28];
-const SC=SCF.map((r,n)=>[r,n+1]).filter(x=>!SHORT||!SC_DROP.includes(x[1])).map(([r,n])=>{const c=r.slice(),need=Math.ceil((c[14]||'').length/13)+4;c[0]=SHORT&&n!==1&&n!==2&&n!==29?Math.max(10,need):Math.max(c[0],need);return c});
+const SC=SCF.map((r,n)=>[r,n+1]).filter(x=>!SHORT||!SC_DROP.includes(x[1])).map(([r,n])=>{const c=r.slice(),v=VOZ[n];c[18]=n;if(v){const need=Math.ceil(1+v+2.8);c[0]=n===29?Math.max(34,need):Math.max(12,need)}else{c[0]=Math.max(c[0],Math.ceil((c[14]||'').length/13)+4)}return c});
 
 let si=0,st=0,CS=null;const fadeEl=$('#fade'),capEl=$('#cap');
-function startScene(i){vsStop();si=i%SC.length;st=0;CS=SC[si];setMode(CS[3]);sunLock=CS[4];speed=CS[5];$('#ct').textContent=CS[1];$('#cs').textContent=CS[2];if(!hlC&&earth)initHL();hlDraw(CS[13]||{});$('#sub').textContent=CS[14]||'';mxScene(si)}
-function director(dt){st+=dt;vsTick();const o=CS[13]||{},dur=CS[0],u=clamp(st/dur,0,1),e=si%3===1?1-Math.pow(1-u,2.4):.3*u+.7*u*u*(3-2*u),m=(a,b)=>a+(b-a)*e,Dn=D0(),d0=CS[8]<0?Dn:CS[8],d1=CS[11]<0?Dn:CS[11];
+function startScene(i){vsStop();vzStop();si=i%SC.length;st=0;CS=SC[si];setMode(CS[3]);sunLock=CS[4];speed=CS[5];$('#ct').textContent=CS[1];$('#cs').textContent=CS[2];if(!hlC&&earth)initHL();hlDraw(CS[13]||{});$('#sub').textContent=CS[14]||'';mxScene(si)}
+function director(dt){st+=dt;vsTick();vzTick();const o=CS[13]||{},dur=CS[0],u=clamp(st/dur,0,1),e=si%3===1?1-Math.pow(1-u,2.4):.3*u+.7*u*u*(3-2*u),m=(a,b)=>a+(b-a)*e,Dn=D0(),d0=CS[8]<0?Dn:CS[8],d1=CS[11]<0?Dn:CS[11];
  const lat=m(CS[6],CS[9]);let lon=m(CS[7],CS[10]);const d=m(d0,d1);if(CS[12])lon+=toLL(sunDir).lon;if(!o.sym)lon+=(si%2?1:-1)*12*u;
  tgt.lat=camState.lat=lat;tgt.lon=camState.lon=lon;tgt.dist=camState.dist=d;
  SW=o.sym?clamp((d-3)/(Dn-3),0,1):0;setInf(o.sym?clamp((d-5.5)/3,0,1):0);
  const fi=o.nfi?0:1.2,fo=o.nfo?0:1;fadeEl.style.opacity=PAUSED?0:Math.max(st<fi?1-st/fi:0,st>dur-fo?(st-(dur-fo))/fo:0);
- capEl.classList.toggle('on',st>1.5&&st<dur-2&&!o.nocap);$('#sub').classList.toggle('on',CC&&st>1&&st<dur-.8&&!!CS[14]);if(uni)uni.uZ.value=clamp((2.2-d)/1,0,1);if(st>=dur){if(REC&&si===SC.length-1){st=dur;recFinish()}else startScene(si+1)}cardsUpd();tlUpdate()}
+ capEl.classList.toggle('on',st>1.5&&st<dur-2&&!o.nocap);subUpd(dur);if(uni)uni.uZ.value=clamp((2.2-d)/1,0,1);if(st>=dur){if(REC&&si===SC.length-1){st=dur;recFinish()}else startScene(si+1)}cardsUpd();tlUpdate()}
 let PAUSED=false,dragTL=false,lastSec=-1;
 const TT=SC.reduce((a,c)=>a+c[0],0),STS=[];{let a=0;SC.forEach(c=>{STS.push(a);a+=c[0]})}
 const fmt=t=>Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0');
@@ -489,7 +495,7 @@ async function recStart(){
  mxPrev=MX.on;MX.on=true;$('#mx').style.opacity=1;
  document.body.classList.add('rec');$('#rot').classList.remove('on');
  if(!document.fullscreenElement)try{await document.documentElement.requestFullscreen()}catch(e){}
- await new Promise(r=>setTimeout(r,1800));
+ $('#gate').classList.remove('on');await new Promise(r=>setTimeout(r,1800));
  vsStop();seek(0);PAUSED=false;$('#pp').textContent='⏸';
  recorder.start(1000);REC=true}
 function recFinish(now){if(recEnding)return;recEnding=true;
@@ -564,7 +570,7 @@ let tpLast=-1,tpN=-1,tpW=[];
 $('#tp').onclick=()=>{const on=$('#tpv').classList.toggle('on');document.body.classList.toggle('tp',on);tpLast=-1};
 setInterval(()=>{if(!$('#tpv').classList.contains('on')||!CS)return;const dur=CS[0],txt=CS[14]||'';
  if(tpLast!==si){tpLast=si;tpN=-1;$('#tpt').innerHTML=txt.split(/\s+/).filter(Boolean).map(w=>'<span>'+w+'</span>').join(' ');tpW=[...$('#tpt').children]}
- const a=1.2,b=Math.max(a+4,dur-2.5),n=Math.floor(clamp((st-a)/(b-a),0,1)*tpW.length)+(st>=a?0:-1);
+ const a=1,b=Math.max(a+4,dur-2.8),n=Math.floor(clamp((st-a)/(b-a),0,1)*tpW.length)+(st>=a?0:-1);
  if(n!==tpN){tpN=n;tpW.forEach((w,k)=>{w.className=k<n?'d':k===n?'c':''})}
  $('#tpm').textContent='CENA '+(si+1)+'/'+SC.length+' · '+(CS[1]||(si?'Final':'Abertura'))+' · restam '+Math.ceil(Math.max(0,dur-st))+' s';
  $('#tpb i').style.width=(clamp(st/dur,0,1)*100)+'%'},120);
@@ -575,7 +581,7 @@ $('#fx').onclick=()=>{const on=document.body.classList.toggle('fx');$('#fx').sty
 const cdE=[...$('#card').children],crE=$('#cr'),cdT=['','',''];
 const OPEN=['VECORION APRESENTA'],END=['Um único planeta.','Bilhões de histórias.','Possibilidades infinitas.'];
 let factSi=-1,qT=null;const factE=$('#fact'),qaE=$('#qa');
-function wordTime(text,phrase,dur){const k=text.indexOf(phrase);if(k<0)return null;const tot=text.split(/\s+/).filter(Boolean).length,n=text.slice(0,k).split(/\s+/).filter(Boolean).length,a=1.2,b=Math.max(a+4,dur-2.5);return a+n/tot*(b-a)}
+function wordTime(text,phrase,dur){const k=text.indexOf(phrase);if(k<0)return null;const tot=text.split(/\s+/).filter(Boolean).length,n=text.slice(0,k).split(/\s+/).filter(Boolean).length,a=1,b=Math.max(a+4,dur-2.8);return a+n/tot*(b-a)}
 function cardsUpd(){if(!CS)return;
  if(factSi!==si){factSi=si;qT=CS[16]?wordTime(CS[14],CS[16][1],CS[0]):null;qaE.lastChild.textContent=CS[16]?CS[16][0]:'';factE.innerHTML=(CS[15]||[]).map(f=>'<b>'+f[0]+'</b><span>'+f[1]+'</span>').join('')}
  factE.classList.toggle('on',!!CS[15]&&st>3.5&&st<CS[0]-2.5);qaE.classList.toggle('on',qT!==null&&st>qT-.2&&st<qT+7.5);const d=CS[0],last=si===SC.length-1,first=si===0;let t=['','',''],on=[0,0,0],cr=0;
@@ -583,6 +589,23 @@ function cardsUpd(){if(!CS)return;
  else if(last){t=END.slice();const T=END.map(x=>wordTime(CS[14].toLowerCase(),x.toLowerCase(),d)||99),off=st>d-2.5;on=T.map(x=>st>x&&!off?1:0);cr=st>d-9&&st<d-1.5}
  cdE.forEach((e,k)=>{if(cdT[k]!==t[k]){cdT[k]=t[k];e.textContent=t[k]}e.classList.toggle('on',!!on[k])});
  crE.textContent=cr||last?'Imagens: NASA Earth Observatory · Natural Earth · three-globe':'';crE.classList.toggle('on',!!cr)}
-build().then(()=>{setMode(0);srcPanel();autoRot=false;startScene(0);prog(100,'Pronto');const l=$('#load');l.style.opacity=0;setTimeout(()=>l.remove(),900);requestAnimationFrame(loop)}).catch(e=>fail(e.message||e));
+/* ===== VOZ REAL (audio/cena-NN.mp3) + LEGENDAS POR FRASE + PORTÃO DE INÍCIO ===== */
+let VZON=true,vzA=null,vzStarted=false,vzPre=-1;const vzCache={};
+const vzGet=n=>vzCache[n]||(vzCache[n]=(()=>{const a=new Audio('audio/cena-'+String(n).padStart(2,'0')+'.mp3');a.preload='auto';return a})());
+function vzDuck(on){if(MX.ctx&&MX.m){MX.m.gain.cancelScheduledValues(MX.ctx.currentTime);MX.m.gain.setTargetAtTime(+$('#mv').value*(on?.42:1),MX.ctx.currentTime,.35)}}
+function vzStop(){if(vzA){try{vzA.pause()}catch(e){}vzA=null}vzStarted=false;vzDuck(false)}
+function vzTick(){if(!CS)return;if(vzPre!==si){vzPre=si;if(CS[18])vzGet(CS[18]);if(SC[si+1])vzGet(SC[si+1][18])}
+ if(!VZON||PAUSED||vzStarted||!CS[18]||st<1)return;vzStarted=true;const a=vzGet(CS[18]);vzA=a;try{a.currentTime=0}catch(e){}
+ a.onended=()=>{if(vzA===a)vzDuck(false)};a.play().then(()=>{if(vzA===a)vzDuck(true)}).catch(()=>{})}
+$('#vo').onclick=()=>{VZON=!VZON;$('#vo').style.opacity=VZON?1:.45;if(!VZON)vzStop()};
+$('#pp').addEventListener('click',()=>{if(vzA&&vzStarted){if(PAUSED)vzA.pause();else vzA.play().catch(()=>{})}});
+/* legendas: uma frase de cada vez, no ritmo da fala */
+let subSi=-1,subK=-1;const subE=$('#sub');
+function subUpd(dur){if(!CS||!CS[14]||!CC){subE.classList.remove('on');return}
+ if(subSi!==si){subSi=si;subK=-1;const tx=CS[14],ss=tx.match(/[^.!?]+[.!?]+/g)||[tx],tot=tx.split(/\s+/).filter(Boolean).length,a=1,b=Math.max(a+4,dur-2.8);let cum=0;CS.sub=ss.map(x=>{const w=x.trim().split(/\s+/).length,t0=a+cum/tot*(b-a);cum+=w;return{t:t0,x:x.trim()}});CS.subEnd=b+.5}
+ let k=-1;CS.sub.forEach((q,n)=>{if(st>=q.t)k=n});const on=k>=0&&st<CS.subEnd;
+ if(on&&k!==subK){subK=k;subE.textContent=CS.sub[k].x}subE.classList.toggle('on',on)}
+$('#gb').onclick=()=>{mxInit();MX.on=true;$('#mx').style.opacity=1;$('#gate').classList.remove('on');PAUSED=false;$('#pp').textContent='⏸';seek(0)};
+build().then(()=>{setMode(0);srcPanel();autoRot=false;startScene(0);PAUSED=true;$('#pp').textContent='▶';$('#gate').classList.add('on');prog(100,'Pronto');const l=$('#load');l.style.opacity=0;setTimeout(()=>l.remove(),900);requestAnimationFrame(loop)}).catch(e=>fail(e.message||e));
 }
 </script></body></html>

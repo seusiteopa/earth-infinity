@@ -34,6 +34,12 @@ Tudo é gerado por código, sem arquivos de áudio. Os botões ficam na barra de
 - **Trilha eletrônica** (124 BPM): cada cena tem uma energia. Há cenas calmas, outras com groove (deep house) e picos com baixo em semicolcheias. Antes de cada pico entra um build-up com riser e rufo de caixa, e o drop cai no início da cena seguinte. O pad "pulsa" junto com o kick (sidechain).
 - **Narração nova**: texto conversado, com perguntas e respostas ("Você sabia?"). A pergunta também aparece na tela no momento em que é feita. A duração de cada cena se ajusta ao tamanho da fala.
 
+## Narração com voz real
+- Os arquivos `audio/cena-01.mp3` a `cena-29.mp3` tocam no início de cada cena. A duração da cena é o tamanho da voz mais uma folga, e a trilha baixa enquanto a voz fala.
+- Na abertura há um botão **▶ INICIAR** (o navegador só libera o som depois de um clique). Use fones de ouvido.
+- As legendas aparecem frase por frase, no ritmo da fala. O botão 🔊 liga e desliga a voz.
+- O gravador (⏺ Gravar) captura voz e trilha juntas.
+
 ## Texturas (opcional, para mais qualidade)
 - NASA Blue Marble (dia): https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-map/
 - NASA Blue Marble com relevo e batimetria: https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography-bathymetry
