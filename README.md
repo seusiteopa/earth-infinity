@@ -14,6 +14,16 @@ Filme em código (HTML único, Three.js): Terra dentro do arco direito do símbo
 4. O link fica em `https://SEU-USUARIO.github.io/earth-infinity/`.
 (Também funciona no Netlify: arraste a pasta.)
 
+## Gravar o vídeo (com voz)
+Use **Chrome ou Edge no computador**, com o site hospedado (para carregar as texturas).
+1. Abra o site e espere carregar. Se puder, deixe a janela em tela cheia (F11).
+2. Escolha a voz no seletor (prefira "Google português do Brasil" ou uma voz "Natural").
+3. Clique em **⏺ Gravar**. Na janela do navegador, selecione **esta guia** e marque **"Compartilhar áudio da guia"**.
+4. O filme roda do início ao fim sozinho, narrando cada cena. A cena espera a voz terminar antes de passar para a próxima.
+5. No final, o arquivo `earth-infinity.mp4` (ou `.webm`) é baixado automaticamente. Esc interrompe a gravação.
+
+O botão 🔊 liga a narração sem gravar, para testar a voz. A voz é gerada pelo navegador (Web Speech API), então muda conforme o sistema.
+
 ## Texturas (opcional, para mais qualidade)
 - NASA Blue Marble (dia): https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-map/
 - NASA Blue Marble com relevo e batimetria: https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/base-topography-bathymetry
