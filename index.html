@@ -191,7 +191,7 @@ async function build(){
  if(mode>.5&&mode<1.5){vec3 w=vec3(.02,.1,.25);vec3 g=mix(vec3(.1,.5,.2),vec3(.85,.8,.3),smoothstep(.1,.35,h));g=mix(g,vec3(.5,.3,.15),smoothstep(.35,.6,h));g=mix(g,vec3(1.),smoothstep(.6,.9,h));col=(h<.03?w:g)*(.3+.7*clamp(l*1.4+.35,0.,1.));}
  else if(mode>1.5){col=d*.04+nt*2.2;}
  else{float e=1./2048.;vec3 ea=normalize(cross(vec3(0.,1.,0.),n)),no=cross(n,ea);float hE=texture2D(tB,vUv+vec2(e,0.)).r-texture2D(tB,vUv-vec2(e,0.)).r,hN=texture2D(tB,vUv+vec2(0.,e)).r-texture2D(tB,vUv-vec2(0.,e)).r;d*=clamp(1.-(dot(sun,ea)*hE+dot(sun,no)*hN)*8.,.6,1.5);d*=1.+(fract(sin(dot(floor(vUv*vec2(6000.,3000.)),vec2(12.9898,78.233)))*43758.5453)-.5)*.2*uZ;col=d*(.035+max(l,0.)*1.15)+nt*(1.-df)*1.7*(1.-.85*(cUse>.5?texture2D(tC,vec2(vUv.x-cOff,vUv.y)).g:0.));col+=vec3(1.,.42,.15)*exp(-pow(l*6.,2.))*.22*d;
- float wt=step(d.r+.04,d.b)*step(d.r,.45);vec3 hh=normalize(sun+v);col+=vec3(1.,.95,.85)*pow(max(dot(n,hh),0.),90.)*.7*wt*df;}
+ float wt=step(d.r+.04,d.b)*step(d.r,.45);vec3 hh=normalize(sun+v);col+=vec3(1.,.95,.85)*pow(max(dot(n,hh),0.),260.)*.22*wt*df;}
  col+=vec3(.25,.55,1.)*pow(1.-max(dot(n,v),0.),3.)*.6*(.15+.85*df);
  if(grid>.5){float gx=abs(fract(vUv.x*24.)-.5),gy=abs(fract(vUv.y*12.)-.5);col+=vec3(0.,.5,.7)*(smoothstep(.485,.5,gx)+smoothstep(.485,.5,gy))*.6;}
  gl_FragColor=vec4(col,1.);}`}));
